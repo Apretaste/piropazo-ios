@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <BuddyBuildSDK/BuddyBuildSDK.h>
 
 
 @interface AppDelegate ()
@@ -18,6 +19,8 @@
 #pragma mark - Life Cycle
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [BuddyBuildSDK setup];
+    
     //Test
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     

@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		0478BF161EEE721500B5D613 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0478BF141EEE721500B5D613 /* Fabric.framework */; };
 		0478BF171EEE721500B5D613 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0478BF151EEE721500B5D613 /* Crashlytics.framework */; };
+		25F4FC51693797103B4F0B01 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A8C43B76F3E5DDB534E1B06 /* AssetsLibrary.framework */; };
+		45CFE8101B85C1DF1A4D2363 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CAB2EF74DE296E6CC5F566E /* SystemConfiguration.framework */; };
+		4A0857FC8360B8A5179D4CCB /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A796CE8B630FAA4338C73D /* BuddyBuildSDK.framework */; };
+		7FD4E1C61688E66889B4DFE5 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB5CCE17F55464CCE57AF99 /* CoreVideo.framework */; };
+		922C29A2545AF3DB400A2D99 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F92ADB2965F0BA092B9F7E8 /* QuartzCore.framework */; };
+		ADF8A0EA689FCD8C0156945A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71551260B5D678AF4D9D7297 /* CoreMedia.framework */; };
 		B41F17861EEED3A700EBFCBD /* plus_icon_Matches.png in Resources */ = {isa = PBXBuildFile; fileRef = B41F17831EEED3A700EBFCBD /* plus_icon_Matches.png */; };
 		B41F17871EEED3A700EBFCBD /* plus_icon_Matches@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B41F17841EEED3A700EBFCBD /* plus_icon_Matches@2x.png */; };
 		B41F17881EEED3A700EBFCBD /* plus_icon_Matches@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B41F17851EEED3A700EBFCBD /* plus_icon_Matches@3x.png */; };
@@ -328,11 +334,20 @@
 		B4C959861EE9618D005EDDC3 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = B4C9587F1EE9618C005EDDC3 /* user.png */; };
 		B4C959871EE9618D005EDDC3 /* user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B4C958801EE9618C005EDDC3 /* user@2x.png */; };
 		B4C959881EE9618D005EDDC3 /* user@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B4C958811EE9618C005EDDC3 /* user@3x.png */; };
+		D2D5FDB61CF4DC40FEA54F24 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0749BA503BE7301812B7A8 /* CoreText.framework */; };
+		D9B817DA8DC3529CFDA6E36F /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25B49024A9A5C1DD415936F6 /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0478BF141EEE721500B5D613 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		0478BF151EEE721500B5D613 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		25B49024A9A5C1DD415936F6 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		4F92ADB2965F0BA092B9F7E8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		50A796CE8B630FAA4338C73D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BuddyBuildSDK.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
+		5A8C43B76F3E5DDB534E1B06 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		71551260B5D678AF4D9D7297 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		9CAB2EF74DE296E6CC5F566E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9E0749BA503BE7301812B7A8 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		B41F17831EEED3A700EBFCBD /* plus_icon_Matches.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_icon_Matches.png; sourceTree = "<group>"; };
 		B41F17841EEED3A700EBFCBD /* plus_icon_Matches@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon_Matches@2x.png"; sourceTree = "<group>"; };
 		B41F17851EEED3A700EBFCBD /* plus_icon_Matches@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus_icon_Matches@3x.png"; sourceTree = "<group>"; };
@@ -719,6 +734,7 @@
 		B4C958801EE9618C005EDDC3 /* user@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user@2x.png"; sourceTree = "<group>"; };
 		B4C958811EE9618C005EDDC3 /* user@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user@3x.png"; sourceTree = "<group>"; };
 		B4C959891EE961A5005EDDC3 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		EBB5CCE17F55464CCE57AF99 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -732,6 +748,14 @@
 				B4C956F91EE952D5005EDDC3 /* Foundation.framework in Frameworks */,
 				0478BF171EEE721500B5D613 /* Crashlytics.framework in Frameworks */,
 				B4C956F51EE952C1005EDDC3 /* CoreFoundation.framework in Frameworks */,
+				4A0857FC8360B8A5179D4CCB /* BuddyBuildSDK.framework in Frameworks */,
+				25F4FC51693797103B4F0B01 /* AssetsLibrary.framework in Frameworks */,
+				D2D5FDB61CF4DC40FEA54F24 /* CoreText.framework in Frameworks */,
+				D9B817DA8DC3529CFDA6E36F /* CoreTelephony.framework in Frameworks */,
+				45CFE8101B85C1DF1A4D2363 /* SystemConfiguration.framework in Frameworks */,
+				922C29A2545AF3DB400A2D99 /* QuartzCore.framework in Frameworks */,
+				ADF8A0EA689FCD8C0156945A /* CoreMedia.framework in Frameworks */,
+				7FD4E1C61688E66889B4DFE5 /* CoreVideo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,6 +818,14 @@
 				B4C956F61EE952D5005EDDC3 /* AVFoundation.framework */,
 				B4C956F71EE952D5005EDDC3 /* Foundation.framework */,
 				B4C956F41EE952C1005EDDC3 /* CoreFoundation.framework */,
+				50A796CE8B630FAA4338C73D /* BuddyBuildSDK.framework */,
+				5A8C43B76F3E5DDB534E1B06 /* AssetsLibrary.framework */,
+				9E0749BA503BE7301812B7A8 /* CoreText.framework */,
+				25B49024A9A5C1DD415936F6 /* CoreTelephony.framework */,
+				9CAB2EF74DE296E6CC5F566E /* SystemConfiguration.framework */,
+				4F92ADB2965F0BA092B9F7E8 /* QuartzCore.framework */,
+				71551260B5D678AF4D9D7297 /* CoreMedia.framework */,
+				EBB5CCE17F55464CCE57AF99 /* CoreVideo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

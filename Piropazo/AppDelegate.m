@@ -18,7 +18,7 @@
 #pragma mark - Life Cycle
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+    //Test
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     changeLanguage = NO;

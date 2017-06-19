@@ -1967,8 +1967,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pragres.Piropazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f3b8e202-2cb8-40ed-8ce6-c1c2c98d3c2d";
-				PROVISIONING_PROFILE_SPECIFIER = Piropazo_AppStore_Distribution_Profile;
+				PROVISIONING_PROFILE = "d30228ba-aafc-4878-862f-c0bfd0753762";
+				PROVISIONING_PROFILE_SPECIFIER = Piropazo_AdHoc_Distribution_Profile;
 			};
 			name = Debug;
 		};
@@ -1989,8 +1989,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pragres.Piropazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f3b8e202-2cb8-40ed-8ce6-c1c2c98d3c2d";
-				PROVISIONING_PROFILE_SPECIFIER = Piropazo_AppStore_Distribution_Profile;
+				PROVISIONING_PROFILE = "d30228ba-aafc-4878-862f-c0bfd0753762";
+				PROVISIONING_PROFILE_SPECIFIER = Piropazo_AdHoc_Distribution_Profile;
 			};
 			name = Release;
 		};

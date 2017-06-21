@@ -21,7 +21,7 @@
 {
     [BuddyBuildSDK setup];
     
-    //Test
+    //Test for commit new
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     changeLanguage = NO;
@@ -42,6 +42,7 @@
 //==================================================================//
 //    [Fabric with:@[[Crashlytics class]]];
 
+    //Test for Push
     
     appLatitude = @"0";
     appLongitude = @"0";

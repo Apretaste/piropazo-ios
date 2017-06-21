@@ -11,7 +11,7 @@
 #import "IntrestCell.h"
 #import "UIButton+WebCache.h"
 #import "UIImageView+WebCache.h"
-
+#import "StoreVC.h"
 @interface EditProfileVC : UIViewController<UIScrollViewDelegate,UITextFieldDelegate,URLManagerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     AppDelegate * appDelegate;

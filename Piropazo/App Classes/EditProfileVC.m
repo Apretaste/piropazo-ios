@@ -1132,7 +1132,10 @@
 }
 -(void)btnStoreClicked:(id)sender
 {
-  
+    //Work in progress
+    /*StoreVC * store = [[StoreVC alloc]init];
+    
+    [self.navigationController pushViewController:store animated:YES];*/
 }
 -(void)btnlogoutClicked:(id)sender
 {
@@ -1787,15 +1790,14 @@
     txtBirthDay.font=[UIFont systemFontOfSize:15];
     txtBirthDay.autocorrectionType = UITextAutocorrectionTypeNo;
     [txtBirthDay setAttributedPlaceholder:attributedString];
-
+//App Test
     //txtLanguage.returnKeyType=UIReturnKeyNext;
     [imgBirthdayTextBox addSubview:txtBirthDay];
     
     NSString * strBirthday = @"";
     
     if([[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]isEqualToString:@""]){
-        strBirthday = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]];
-  
+        strBirthday = [NSString stringWithFormat:@"%@",[self todatetimonly:[[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]]];
     }
     
     txtBirthDay.text = strBirthday;
@@ -2359,13 +2361,15 @@
 
     //================== State/provision ================//
     
+   
+    
+    StartForStateandProvience = yy+imgCountryTextBox.frame.size.height+5;
+    
+    NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
+    
     if ([strCountry isEqualToString:@"Cuba"] || [strCountry isEqualToString:@"U.S.A"] ) {
         
-         yy = yy+imgCountryTextBox.frame.size.height+5;
-        
-        StartForStateandProvience = yy;
-        
-        NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
+         yy = yy+imgCountryTextBox.frame.size.height+5;NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
         
         NSString * strProvience = @"";
         if ([strCountry isEqualToString:@"Cuba"]) {
@@ -2390,10 +2394,13 @@
                 }
             }
         }else{
-            labelText = [TSLanguageManager localizedString:@"State"];
             
-            if([[dicDetails valueForKey:@"profile"]valueForKey:@"state"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"state"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"state"]isEqualToString:@""]){
-                strProvience = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"state"]];
+            //StartForStateandProvience = yy;
+             NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
+            labelText = [TSLanguageManager localizedString:@"usstate"];
+            
+            if([[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]isEqualToString:@""]){
+                strProvience = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]];
             }
             
             for(int i=0; i<[arrStates count]; i++)
@@ -4004,7 +4011,6 @@
             imageStateDropdown.image = [UIImage imageNamed:@"downward facing arrow"];
             [txtState addSubview:imageStateDropdown];
             
-            UIButton *btnProvience = [UIButton buttonWithType:UIButtonTypeCustom];
             btnProvience.backgroundColor=[UIColor clearColor];
             [btnProvience addTarget:self action:@selector(btnSexClicked:) forControlEvents:UIControlEventTouchUpInside];
             btnProvience.frame=txtState.frame;
@@ -4692,7 +4698,20 @@
         }
     }
 }
-
+#pragma mark - helperMethods
+-(NSString *)todatetimonly:(NSString *)givenDate
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date = [[NSDate alloc] init];
+    date = [dateFormatter dateFromString:givenDate];
+    // converting into our required date format
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *reqDateString = [dateFormatter stringFromDate:date];
+    //NSLog(@"date is %@", reqDateString);
+    
+    return reqDateString;
+}
 - (void)onError:(NSError *)error{
     [btnContinue setEnabled:YES];
     [activityIndicatorForSave stopAnimating];

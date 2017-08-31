@@ -2206,7 +2206,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Piropazo/Piropazo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Pragres Corp. (QUCFZW9EL8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = QUCFZW9EL8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2217,8 +2217,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pragres.Piropazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6dd7404d-e0c0-4b3a-b51f-9fca6e3e6cb0";
-				PROVISIONING_PROFILE_SPECIFIER = Piropazo_App_Development_Profile;
+				PROVISIONING_PROFILE = "d30228ba-aafc-4878-862f-c0bfd0753762";
+				PROVISIONING_PROFILE_SPECIFIER = Piropazo_AdHoc_Distribution_Profile;
 			};
 			name = Debug;
 		};
@@ -2230,7 +2230,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Piropazo/Piropazo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Pragres Corp. (QUCFZW9EL8)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = QUCFZW9EL8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2241,8 +2241,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pragres.Piropazo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6dd7404d-e0c0-4b3a-b51f-9fca6e3e6cb0";
-				PROVISIONING_PROFILE_SPECIFIER = Piropazo_App_Development_Profile;
+				PROVISIONING_PROFILE = "d30228ba-aafc-4878-862f-c0bfd0753762";
+				PROVISIONING_PROFILE_SPECIFIER = Piropazo_AdHoc_Distribution_Profile;
 			};
 			name = Release;
 		};

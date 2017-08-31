@@ -31,6 +31,9 @@
 @interface ChoosePersonView : MDCSwipeToChooseView
 {
     NSMutableArray * arrCountry;
+    
+    NSMutableArray * arrColors;
+
 }
 
 @property (nonatomic, strong) UIButton *btnTap;

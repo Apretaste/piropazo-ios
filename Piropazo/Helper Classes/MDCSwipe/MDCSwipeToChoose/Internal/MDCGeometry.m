@@ -37,7 +37,6 @@ CGPoint MDCCGPointAdd(const CGPoint a, const CGPoint b) {
     {
         return CGPointMake(a.x + b.x, a.y + b.y);
     }
-   //
 }
 
 CGPoint MDCCGPointSubtract(const CGPoint minuend, const CGPoint subtrahend) {
@@ -47,8 +46,8 @@ CGPoint MDCCGPointSubtract(const CGPoint minuend, const CGPoint subtrahend) {
 }
 
 CGFloat MDCDegreesToRadians(const CGFloat degrees) {
-    return degrees * (M_PI/180.0);
-    // return degrees * (M_PI/150);
+    //return degrees * (M_PI/180.0);
+     return degrees * (0);
 }
 
 CGRect MDCCGRectExtendedOutOfBounds(const CGRect rect,

@@ -19,14 +19,14 @@
     [super viewDidLoad];
     
     changeLanguage = NO;
-
-    
-    [self SetNavigationbar];
-
-    
     [self setFrame];
 
+    [self SetNavigationbar];
+
     // Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated {
+    //isForCrashLogout = NO;
 }
 #pragma mark - Content Frame
 -(void)SetNavigationbar
@@ -34,6 +34,23 @@
     navview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 64)];
     navview.backgroundColor =navigationBackgroundcolor;
     navview.userInteractionEnabled=YES;
+    // *** Set masks bounds to NO to display shadow visible ***
+    navview.layer.masksToBounds = NO;
+    // *** Set light gray color as shown in sample ***
+    navview.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    // *** *** Use following to add Shadow top, left ***
+    //    self.avatarImageView.layer.shadowOffset = CGSizeMake(-5.0f, -5.0f);
+    
+    // *** Use following to add Shadow bottom, right ***
+    navview.layer.shadowOffset = CGSizeMake(5.0f, 0.0f);
+    
+    // *** Use following to add Shadow top, left, bottom, right ***
+    // avatarImageView.layer.shadowOffset = CGSizeZero;
+    navview.layer.shadowRadius = 5.0f;
+    
+    // *** Set shadowOpacity to full (1) ***
+    navview.layer.shadowOpacity = 1.0f;
+
     [self.view addSubview:navview];
     
     UIImageView * imgLogo = [[UIImageView alloc]initWithFrame:CGRectMake((DEVICE_WIDTH/2)-(114/2), (64/2)-(24/7), 114, 27)];

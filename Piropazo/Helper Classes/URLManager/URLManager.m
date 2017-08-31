@@ -116,7 +116,7 @@
     [theRequest setHTTPMethod:@"POST"];
     [theRequest setHTTPShouldHandleCookies:NO];
     //	[theRequest setTimeoutInterval:30];
-    [theRequest setTimeoutInterval:200];
+    [theRequest setTimeoutInterval:500];
     
     NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:theRequest delegate:_weak];
     
@@ -574,9 +574,8 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	[delegate onError:error];
-    
-//    NSInteger ancode = [error code];
-//    [APP_DELEGATE ShowNoNetworkConnectionPopUpWithErrorCode:ancode];
+//  NSInteger ancode = [error code];
+//  [APP_DELEGATE ShowNoNetworkConnectionPopUpWithErrorCode:ancode];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

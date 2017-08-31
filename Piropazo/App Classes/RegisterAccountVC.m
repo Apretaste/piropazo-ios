@@ -495,7 +495,7 @@
     [arrStates addObject:dicArkansas];
     [arrStates addObject:dicCalifornia];
     [arrStates addObject:dicColorado];
-    [arrStates addObject:dicCienfuegos];
+    //[arrStates addObject:dicCienfuegos];//ajay
     [arrStates addObject:dicConnecticut];
     [arrStates addObject:dicDelaware];
     [arrStates addObject:dicFlorida];
@@ -543,9 +543,11 @@
     //===========================================================//
 
     
-    [self SetNavigationbar];
 
     [self setFrame];
+    
+    [self SetNavigationbar];
+
     
     [APP_DELEGATE endHudProcess];
 
@@ -560,9 +562,22 @@
     navview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 64)];
     navview.backgroundColor =navigationBackgroundcolor;
     navview.userInteractionEnabled=YES;
-    navview.layer.shadowOffset = CGSizeMake(0.1, 0.1);
-    navview.layer.shadowRadius = 1.0;
-    navview.layer.shadowOpacity = 0.4;
+    // *** Set masks bounds to NO to display shadow visible ***
+    navview.layer.masksToBounds = NO;
+    // *** Set light gray color as shown in sample ***
+    navview.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    // *** *** Use following to add Shadow top, left ***
+    //    self.avatarImageView.layer.shadowOffset = CGSizeMake(-5.0f, -5.0f);
+    
+    // *** Use following to add Shadow bottom, right ***
+    navview.layer.shadowOffset = CGSizeMake(5.0f, 0.0f);
+    
+    // *** Use following to add Shadow top, left, bottom, right ***
+    // avatarImageView.layer.shadowOffset = CGSizeZero;
+    navview.layer.shadowRadius = 5.0f;
+    
+    // *** Set shadowOpacity to full (1) ***
+    navview.layer.shadowOpacity = 1.0f;
     [self.view addSubview:navview];
     
     UIImageView * imgLogo = [[UIImageView alloc]initWithFrame:CGRectMake((DEVICE_WIDTH/2)-(114/2), (64/2)-(24/7), 114, 27)];
@@ -903,7 +918,7 @@
     [activityIndicator setFrame:CGRectMake(btnContinue.frame.size.width-40, 5, 30, 30)];
     [btnContinue addSubview:activityIndicator];
     
-    [scrlContent setContentSize:CGSizeMake(scrlContent.frame.size.width, yy+5)];
+    [scrlContent setContentSize:CGSizeMake(scrlContent.frame.size.width, yy+50)];
     scrlContent.showsHorizontalScrollIndicator=NO;
     scrlContent.showsVerticalScrollIndicator=NO;
     scrlContent.scrollEnabled=YES;
@@ -931,18 +946,21 @@
     //[datePicker setMaximumDate:[NSDate date]];
     datePicker.datePickerMode = UIDatePickerModeDate;
     NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+   
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/YYYY"];
+    
     NSDate * currentDate = [NSDate date];
     NSDateComponents * comps = [[NSDateComponents alloc] init];
     [comps setYear: -18];
     NSDate * maxDate = [gregorian dateByAddingComponents: comps toDate: currentDate options: 0];
     [comps setYear: -75];
     NSDate * minDate = [gregorian dateByAddingComponents: comps toDate: currentDate options: 0];
-    
+    NSString *dateStr = [dateFormatter stringFromDate:maxDate];
+
     datePicker.minimumDate = minDate;
     datePicker.maximumDate = maxDate;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/YYYY"];
-    NSString *dateStr = [dateFormatter stringFromDate:currentDate];
+    
     selectedDate=dateStr;
     NSLog(@"selectedDate====>%@",selectedDate);
     [datePicker setDate:[dateFormatter dateFromString:selectedDate]];
@@ -1515,7 +1533,7 @@
         [alertView showWithAnimation:Alert_Animation_Type];
         
     }
-    else if ([txtCityname.text isEqualToString:[TSLanguageManager localizedString:@"Cuba"]])
+    else if ([strCountrykeyWord isEqualToString:@"CU"])
     {
         if ([txtProvince.text isEqualToString:@""]) {
             URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please enter Province"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
@@ -1530,7 +1548,7 @@
             [self CallwebServiceforRegistration];
         }
     }
-    else if ([txtCityname.text isEqualToString:[TSLanguageManager localizedString:@"U.S.A"]])
+    else if ([strCountrykeyWord isEqualToString:@"US"])
     {
         if ([txtStates.text isEqualToString:@""]) {
             URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please enter State"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
@@ -1652,6 +1670,8 @@
     }
     ImageSelected = YES;
     
+    [self CallwebServiceforImageUplaoding];
+
     [picker dismissModalViewControllerAnimated:YES];
 }
 
@@ -1736,13 +1756,6 @@
 #pragma mark - Web Service Call
 -(void)CallwebServiceforRegistration
 {
-    [btnContinue setEnabled:NO];
-    [activityIndicator startAnimating];
-    
-    NSString * webServiceName = @"run/api";
-    
-    NSMutableDictionary *parameter_Filed = [[NSMutableDictionary alloc]init];
-
     if (strSexkeyWord == nil) {
         
         strSexkeyWord = @"";
@@ -1779,56 +1792,87 @@
         
     }
     
-    [parameter_Filed setObject:strSexkeyWord forKey:@"SEXO"];
-    [parameter_Filed setObject:txtFirstname.text forKey:@"NOMBRE"];
-    [parameter_Filed setObject:strSexOrinetationkeyWord forKey:@"ORIENTACION"];
-    [parameter_Filed setObject:strCountrykeyWord forKey:@"PAIS"];
-    [parameter_Filed setObject:strProvincekeyWord forKey:@"PROVINCIA"];
-    [parameter_Filed setObject:txtBirthday.text forKey:@"CUMPLEANOS"];
-    [parameter_Filed setObject:strStatekeyWord forKey:@"USSTATE"];
-    NSString * strLang = [NSString stringWithFormat:@"%@",[TSLanguageManager selectedLanguage]];
-    [parameter_Filed setObject:strLang forKey:@"LANG"];
-    
-    NSString * registerStr = [parameter_Filed JSONRepresentation];
-
-    NSString * strBulk = [NSString stringWithFormat:@"perfil bulk %@",registerStr];
-    
-    NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
-    
-    [parameter_dict setObject:strBulk forKey:@"subject"];
-    
-    if (CURRENT_USER_ACCESS_TOKEN != nil || CURRENT_USER_ACCESS_TOKEN != [NSNull null])
+    if(ImageSelected == YES)
     {
-        [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
+        
+        [btnContinue setEnabled:NO];
+        [activityIndicator startAnimating];
+        
+        NSString * webServiceName = @"run/api";
+        
+        NSMutableDictionary *parameter_Filed = [[NSMutableDictionary alloc]init];
+        
+        if([strCountrykeyWord isEqualToString:@"CU"]){
+            [parameter_Filed setObject:strProvincekeyWord forKey:@"PROVINCIA"];
+        }
+        
+        if ([strCountrykeyWord isEqualToString:@"US"]) {
+            [parameter_Filed setObject:strStatekeyWord forKey:@"USSTATE"];
+        }
 
-    }
-    else
+        [parameter_Filed setObject:strSexkeyWord forKey:@"SEXO"];
+        [parameter_Filed setObject:txtFirstname.text forKey:@"NOMBRE"];
+        [parameter_Filed setObject:strSexOrinetationkeyWord forKey:@"ORIENTACION"];
+        [parameter_Filed setObject:strCountrykeyWord forKey:@"PAIS"];
+        [parameter_Filed setObject:txtBirthday.text forKey:@"CUMPLEANOS"];
+        NSString * strLang = [NSString stringWithFormat:@"%@",[TSLanguageManager selectedLanguage]];
+        [parameter_Filed setObject:strLang forKey:@"LANG"];
+        
+        NSString * registerStr = [parameter_Filed JSONRepresentation];
+        
+        NSString * strBulk = [NSString stringWithFormat:@"perfil bulk %@",registerStr];
+        
+        NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
+        
+        [parameter_dict setObject:strBulk forKey:@"subject"];
+        
+        if (CURRENT_USER_ACCESS_TOKEN != nil || CURRENT_USER_ACCESS_TOKEN != [NSNull null])
+        {
+            [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
+            
+        }
+        else
+        {
+            [parameter_dict setObject:@"" forKey:@"token"];
+        }
+        
+        URLManager *manager = [[URLManager alloc] init];
+        manager.delegate = self;
+        manager.commandName = @"Registration";
+        [manager postUrlCallForReg:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
+    }else
     {
-        [parameter_dict setObject:@"" forKey:@"token"];
+        URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please tap your avatar to take a picture before continuing"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
+        [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
+        [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
+            [alertView hideWithCompletionBlock:^{
+                
+            }];
+        }];
+        [alertView showWithAnimation:URBAlertAnimationTopToBottom];
     }
-    
-    URLManager *manager = [[URLManager alloc] init];
-    manager.delegate = self;
-    manager.commandName = @"Registration";
-    [manager postUrlCallForReg:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
-}
+
+   }
 
 -(void)CallwebServiceforImageUplaoding
 {
-    [btnContinue setEnabled:NO];
-    [activityIndicator startAnimating];
+//    [btnContinue setEnabled:NO];
+//    [activityIndicator startAnimating];
 
-    if(ImageSelected == YES)
-    {
+//    if(ImageSelected == YES)
+//    {
         NSString * webServiceName = @"run/api";
         
-        NSData* data ;
-        
-        data = UIImageJPEGRepresentation(imgProfile.image, 0.2f);
-        
+//        NSData* data ;
+//        
+//        data = UIImageJPEGRepresentation(imgProfile.image, 0.2f);
+    
+    NSString *base64String = [UIImageJPEGRepresentation(imgProfile.image, 0.2f)
+                              base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    
         NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
         [parameter_dict setObject:@"perfil FOTO" forKey:@"subject"];
-        [parameter_dict setObject:data forKey:@"attachment"];
+        [parameter_dict setObject:base64String forKey:@"attachment"];
         
         if (CURRENT_USER_ACCESS_TOKEN != nil || CURRENT_USER_ACCESS_TOKEN != [NSNull null]) {
             [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
@@ -1842,18 +1886,18 @@
         manager.delegate = self;
         manager.commandName = @"ImageUploading";
         [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
-    }
-    else
-    {
-        URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please tap your avatar to take a picture before continuing"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
-        [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
-        [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
-            [alertView hideWithCompletionBlock:^{
-                
-            }];
-        }];
-        [alertView showWithAnimation:URBAlertAnimationTopToBottom];
-    }
+    //}
+//    else
+//    {
+//        URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please tap your avatar to take a picture before continuing"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
+//        [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
+//        [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
+//            [alertView hideWithCompletionBlock:^{
+//                
+//            }];
+//        }];
+//        [alertView showWithAnimation:URBAlertAnimationTopToBottom];
+//    }
 }
 
 #pragma mark Response
@@ -1870,8 +1914,14 @@
         if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
         {
             NSLog(@"RegistartionScueesFull==>");
+            isForRating = @"NO";
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setValue:isForRating  forKey:@"APP_RATING_FOR"];
+            [userDefaults synchronize];
             
-            [self CallwebServiceforImageUplaoding];
+            [APP_DELEGATE setUpTabBarController:@"YES"];
+
+            
         }
         else{
             URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[[result valueForKey:@"result"] valueForKey:@"message"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
@@ -1889,7 +1939,6 @@
         
         if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
         {
-            [APP_DELEGATE setUpTabBarController:@"YES"];
             
         }
         else

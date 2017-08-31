@@ -11,11 +11,18 @@
 #import "AFCollectionViewCell.h"
 #import "EditProfileVC.h"
 #import "UserDetailVC.h"
+#import "ChatVC.h"
+#import "StoreVC.h";
 @interface MyMatchesVC : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,URLManagerDelegate>
 {
+    
+    UIImageView * imgUnreadMessageCount;
+    UILabel * lblUnreadCount;
+    
     UIImageView * navview;
     
     UILabel * lblError;
+    UILabel * lblStatus;
     
     AppDelegate * appDelegate;
     
@@ -23,6 +30,11 @@
 
     UIView * viewTransperent;
     
+    NSMutableArray * arrayGetMatchesFilter;
+    NSMutableArray * arrayTempFlowerFilter;
+    NSMutableArray * arrayTempYesFilter;
+    NSMutableArray * arrayTempMatchFilter;
+
     NSMutableArray * arrayGetMatches;
     NSMutableArray * arrayUnreadMatches;
     NSMutableArray * arrayTempGetMatches;
@@ -45,10 +57,15 @@
     UIView * viewTransperentFlower;
     UILabel * lblMessageFlower;
     
+    UIView * viewTransperentForNoFlower;
+    UILabel * lblMessageNOFlower;
+    
+    
     UIImageView * imgCancelOtheruserBorder;
     UIImageView * imgCancelOtheruser;
     UIImageView * imgCanceluserBorder;
     UIImageView * imgCanceluser;
+    UIImageView * imgBack;
     
     UIImageView * imgFlowerOtheruserBorder;
     UIImageView *  imgFlowerOtheruser;
@@ -63,6 +80,9 @@
     UIView* viewFromBottom ;
     UIButton* btnFilter;
     
+    UIView* coverViewNotification;
+    UIView * viewShadow2ForViewTransparet;
+
     BOOL allClicked;
     BOOL FloweClicekd;
     BOOL yesTopeopleClicked;

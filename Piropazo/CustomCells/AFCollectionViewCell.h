@@ -35,8 +35,9 @@
 @property (nonatomic, strong) UIButton *btnCancel;
 @property (nonatomic, strong) UIButton *btnAccepet;
 @property (nonatomic, strong) UIButton *btnCahticon;
-
+@property (nonatomic, strong) UIImageView *imgMessage;
 @property (nonatomic, strong) UILabel *lbldate;;
+@property (nonatomic, strong) UILabel *lblMessageCount;;
 //-(void)setImage:(UIImage *)image :(NSString *)srtUrl :(NSString *)title;
 
 @end

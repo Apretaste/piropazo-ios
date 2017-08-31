@@ -114,6 +114,11 @@
         [dicOther4 setObject:@"OTRO" forKey:@"KeyWord"];
         [dicOther4 setObject:@"" forKey:@"flag"];
 
+        NSMutableDictionary * dicOther5 = [[NSMutableDictionary alloc]init];
+        [dicOther5 setObject:@"Panama" forKey:@"English_name"];
+        [dicOther5 setObject:@"Panama" forKey:@"Spanish_name"];
+        [dicOther5 setObject:@"PA" forKey:@"KeyWord"];
+        [dicOther5 setObject:@"panama-flag.png" forKey:@"flag"];
         
         [arrCountry addObject:dicCuba];
         [arrCountry addObject:dicus];
@@ -125,13 +130,29 @@
         [arrCountry addObject:dicMexico];
         [arrCountry addObject:dicCanada];
         [arrCountry addObject:dicOther4];
+        [arrCountry addObject:dicOther5];
+
+        
+        arrColors = [[NSMutableArray alloc]init];
+        UIColor * FirstColor = [APP_DELEGATE colorWithHexString:@"644749"];
+        UIColor * SecondColor = [APP_DELEGATE colorWithHexString:@"6A9454"];
+        UIColor * ThirdColor = [APP_DELEGATE colorWithHexString:@"ffffbb33"];
+        UIColor * FourthColor = [APP_DELEGATE colorWithHexString:@"ff33b5e5"];
+        
+        [arrColors addObject:FirstColor];
+        [arrColors addObject:SecondColor];
+        [arrColors addObject:ThirdColor];
+        [arrColors addObject:FourthColor];
+
         
         //===========================================================//
         
         self.backgroundColor = [UIColor orangeColor];
-        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+//        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
         
-        self.mainBGView.autoresizingMask = self.autoresizingMask;
+        self.mainBGView.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+        UIViewAutoresizingFlexibleTopMargin;
+        self.mainBGView.clipsToBounds = YES;
 
         int yy = 30;
         
@@ -219,7 +240,7 @@
         [self.mainBGView addSubview:imgProfile];
 
         
-        imgCrown = [[AsyncImageView alloc]initWithFrame:CGRectMake((frame.size.width/2)-(93/2), yy-40, 93, 67)];
+        imgCrown = [[AsyncImageView alloc]initWithFrame:CGRectMake((frame.size.width/2)-(93/2), yy-30, 93, 67)];
         //imgCrown.image = [UIImage imageNamed:@"Female-Crown.png"];
         self.imgCrown.autoresizingMask =  UIViewAutoresizingFlexibleLeftMargin |  UIViewAutoresizingFlexibleRightMargin ;;
         [self.imgCrown setContentMode:UIViewContentModeScaleAspectFill];
@@ -238,6 +259,8 @@
             strCrown = [NSString stringWithFormat:@"%@",[dicDetails valueForKey:@"crown"]];
         }
         
+   
+        
         if ([strCrown isEqualToString:@"1"]) {
             
             if ([strPicture isEqualToString:@"1"]){
@@ -250,7 +273,6 @@
                     imgCrown.image = [UIImage imageNamed:@"Male-Crown.png"];
                 }
             }
-  
         }
         
         yy = yy+self.imgBorder.frame.size.height+15;
@@ -277,30 +299,31 @@
         yy = yy+self.lblName.frame.size.height+5;
         
         
-        self.lblage = [[UILabel alloc] initWithFrame:CGRectMake(10, yy, frame.size.width-20, 22)];
-//        if (IS_IPHONE_4){
-//            self.lblage.frame = CGRectMake(10, frame.size.height-100, frame.size.width-20, 30 );
-//        }
-        self.lblage.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin |  UIViewAutoresizingFlexibleRightMargin;
-        [self.lblage setTextColor:[UIColor grayColor]];
-        [self.lblage setBackgroundColor:[UIColor clearColor]];
-        [self.lblage setTextAlignment:NSTextAlignmentCenter];
-        [self.lblage setFont:[UIFont systemFontOfSize:20]];
-        [self.mainBGView addSubview:self.lblage];
-
-        
         if ([dicDetails valueForKey:@"age"]) {
             if (![[dicDetails valueForKey:@"age"] isEqual:[NSNull null]] && ![[dicDetails valueForKey:@"age"]isEqualToString:@""]){
-                self.lblage.text = [NSString stringWithFormat:@"%@ years",[dicDetails valueForKey:@"age"]];
+                
+                self.lblage = [[UILabel alloc] initWithFrame:CGRectMake(10, yy, frame.size.width-20, 18)];
+                //        if (IS_IPHONE_4){
+                //            self.lblage.frame = CGRectMake(10, frame.size.height-100, frame.size.width-20, 30 );
+                //        }
+                self.lblage.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin |  UIViewAutoresizingFlexibleRightMargin;
+                [self.lblage setTextColor:[UIColor grayColor]];
+                [self.lblage setBackgroundColor:[UIColor clearColor]];
+                [self.lblage setTextAlignment:NSTextAlignmentCenter];
+                [self.lblage setFont:[UIFont systemFontOfSize:17]];
+                [self.mainBGView addSubview:self.lblage];
+
+                NSString * strYear = [TSLanguageManager localizedString:@"years"];
+                self.lblage.text = [NSString stringWithFormat:@"%@ %@",[dicDetails valueForKey:@"age"],strYear];
                 
                 yy = yy+self.lblage.frame.size.height+5;
             }else{
-                yy = yy+self.lblName.frame.size.height;
+//                yy = yy+self.lblName.frame.size.height;
             }
         }
         
         
-        self.lblCountry = [[UILabel alloc] initWithFrame:CGRectMake(10, yy, frame.size.width-20, 22)];
+        self.lblCountry = [[UILabel alloc] initWithFrame:CGRectMake(10, yy, frame.size.width-20, 18)];
 //        if (IS_IPHONE_4){
 //            self.lblCountry.frame = CGRectMake(10, frame.size.height-65, frame.size.width-20, 30 );
 //        }
@@ -308,7 +331,7 @@
         [self.lblCountry setTextColor:[UIColor grayColor]];
         [self.lblCountry setBackgroundColor:[UIColor clearColor]];
         [self.lblCountry setTextAlignment:NSTextAlignmentCenter];
-        [self.lblCountry setFont:[UIFont systemFontOfSize:20]];
+        [self.lblCountry setFont:[UIFont systemFontOfSize:17]];
         [self.mainBGView addSubview:self.lblCountry];
 
         if ([dicDetails valueForKey:@"country"])
@@ -323,12 +346,24 @@
                 {
                     if ([[[arrCountry objectAtIndex:i]valueForKey:@"KeyWord"] isEqualToString:strCountry])
                     {
-                        if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
-                            strCountry = [[arrCountry objectAtIndex:i]valueForKey:@"English_name"];
+//                        if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
+//                            strCountry = [[arrCountry objectAtIndex:i]valueForKey:@"English_name"];
+//                        }
+//                        else{
+//                            strCountry = [[arrCountry objectAtIndex:i]valueForKey:@"Spanish_name"];
+//                        }
+                        if ([dicDetails valueForKey:@"location"]!=nil && [dicDetails valueForKey:@"location"]!=[NSNull null]) {
+                            strCountry = [dicDetails valueForKey:@"location"];
+
+                        }else{
+                            if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
+                                        strCountry = [[arrCountry objectAtIndex:i]valueForKey:@"English_name"];
+                                }
+                                        else{
+                                        strCountry = [[arrCountry objectAtIndex:i]valueForKey:@"Spanish_name"];
+                                }
                         }
-                        else{
-                            strCountry = [[arrCountry objectAtIndex:i]valueForKey:@"Spanish_name"];
-                        }
+
                         NSLog(@"index==>%@",strCountry);
                         strImage = [[arrCountry objectAtIndex:i]valueForKey:@"flag"];
                     }
@@ -370,9 +405,9 @@
                 
                 self.lblCountry.attributedText = attachmentString;
                 
-                yy = yy+self.lblCountry.frame.size.height+5;
+                yy = yy+self.lblCountry.frame.size.height+1;
             }else{
-                yy = yy+self.lblage.frame.size.height+5;
+                yy = yy+self.lblage.frame.size.height+1;
             }
         }
         
@@ -392,11 +427,61 @@
             if (![[dicDetails valueForKey:@"tags"] isEqual:[NSNull null]])
             {
                 NSArray * arrtags = [dicDetails valueForKey:@"tags"];
-                if ([arrtags count]>0){
-                   // NSArray * tmpARr = [arrtags valueForKey:@"tags"];
-                    strTags = [arrtags componentsJoinedByString:@""];
+                
+//                NSMutableArray * arrtags = [[NSMutableArray alloc]init];
+//                [arrtags addObject:@"Prabhu"];
+//                [arrtags addObject:@"viral"];
+//                [arrtags addObject:@"KP"];
+//                [arrtags addObject:@"Jam"];
+//                [arrtags addObject:@"Hari"];
+//                [arrtags addObject:@"Ajay"];
+//                [arrtags addObject:@"Darsh"];
+//                [arrtags addObject:@"sa"];
+//                [arrtags addObject:@"jh"];
+//                [arrtags addObject:@"vi"];
+//                [arrtags addObject:@"ki"];
+//                [arrtags addObject:@"po"];
+//                [arrtags addObject:@"ra"];
+//                [arrtags addObject:@"le"];
+
+                
+                
+//                if ([arrtags count]>0){
+//                   // NSArray * tmpARr = [arrtags valueForKey:@"tags"];
+//                    strTags = [arrtags componentsJoinedByString:@""];
+//                }
+//                
+                NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] init];
+                NSMutableAttributedString * textstr;
+//                for (NSString * str in arrtags)
+//                {
+//                    textstr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  ",str] attributes:@{NSForegroundColorAttributeName :[self getRandomColor]}];
+//                    
+//                    [attStr appendAttributedString:textstr];
+//                }
+                
+                
+               
+                for (int i = 0;i<[arrtags count];i++)
+                {
+                    textstr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  ",[arrtags objectAtIndex:i]] attributes:@{NSForegroundColorAttributeName :[self getTagColorForIndex:i]}];
+                    
+                    [attStr appendAttributedString:textstr];
                 }
-                self.lblTags.text = strTags;
+                
+                
+//                    for (NSString * str in arrtags)
+//                    {
+//                        for (int i = 0;i<[arrtags count];i++)
+//                        {
+//                            textstr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  ",strTags] attributes:@{NSForegroundColorAttributeName :[self getRandomColor:(int)[arrtags objectAtIndex:i]]}];
+//                            
+//                            [attStr appendAttributedString:textstr];
+//                        }
+                   // }
+               
+                self.lblTags.attributedText = attStr;
+//                self.lblTags.text = strTags;
             }
         }
         [self.mainBGView addSubview:self.lblTags];
@@ -405,9 +490,73 @@
         [btnTap setBackgroundColor:[UIColor clearColor]];
         [self addSubview:btnTap];
         
+        
     }
     return self;
 }
+//-(UIColor *)getRandomColor:(int)index{
+//    if (index== 1) {
+//        return [UIColor redColor];
+//  
+//    }else if (index==2){
+//        return [UIColor greenColor];
+// 
+//    }else if (index==3){
+//        return [UIColor purpleColor];
+//    }
+//    return [UIColor blueColor];
+////    CGFloat redcolor = arc4random() % 255 / 255.0;
+////    CGFloat greencolor = arc4random() % 255 / 255.0;
+////    CGFloat bluencolor = arc4random() % 255 / 255.0;
+////    return [UIColor colorWithRed:redcolor green:greencolor blue:bluencolor alpha:1.0];
+//
+//}
 
+-(UIColor*)getTagColorForIndex:(int)index
+{
+    arrColors = [[NSMutableArray alloc]init];
+    UIColor * FirstColor = [APP_DELEGATE colorWithHexString:@"644749"];
+    UIColor * SecondColor = [APP_DELEGATE colorWithHexString:@"6A9454"];
+    UIColor * ThirdColor = [APP_DELEGATE colorWithHexString:@"ffffbb33"];
+    UIColor * FourthColor = [APP_DELEGATE colorWithHexString:@"ff33b5e5"];
+    
+//    UIColor * FirstColor = [UIColor brownColor];
+//    UIColor * SecondColor = [UIColor greenColor];
+//    UIColor * ThirdColor = [UIColor redColor];
+//    UIColor * FourthColor = [UIColor purpleColor];
+    
+    [arrColors addObject:FirstColor];
+    [arrColors addObject:SecondColor];
+    [arrColors addObject:ThirdColor];
+    [arrColors addObject:FourthColor];
+    
+//    index = index+1;
+//    
+//    int myIndex = index/[arrColors count];
+//    NSLog(@"myIndex===%d",myIndex);
+    
+    int myIndex = index % [arrColors count];
+    NSLog(@"myIndex===%d",myIndex);
+    
+    UIColor * color = [arrColors objectAtIndex:myIndex];
+    return color;
+}
 
+-(UIColor *) getRandomColor{
+//    if (index== 1) {
+//        return [UIColor redColor];
+//        
+//    }else if (index==2){
+//        return [UIColor greenColor];
+//        
+//    }else if (index==3){
+//        return [UIColor purpleColor];
+//    }
+//    return [UIColor blueColor];
+        CGFloat redcolor = arc4random() % 255 / 255.0;
+        CGFloat greencolor = arc4random() % 255 / 255.0;
+        CGFloat bluencolor = arc4random() % 255 / 255.0;
+        return [UIColor colorWithRed:redcolor green:greencolor blue:bluencolor alpha:1.0];
+    
+}
 @end

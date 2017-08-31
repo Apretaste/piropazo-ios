@@ -17,5 +17,9 @@
 @property(nonatomic,strong)UIImageView * imgCrownIcon;
 @property(nonatomic,strong)UIImageView * imgMulitipleIcon;
 @property(nonatomic,strong)UIImageView * imgAddIcon;
+@property(nonatomic,strong)UILabel * lblItemsName;
 @property(nonatomic,strong)UILabel * lbseperator;
+@property(nonatomic,strong)UILabel * lblSave;
+@property(nonatomic,strong)UIButton * btnCost;
+@property(nonatomic,strong)UILabel * lblNumberone;
 @end

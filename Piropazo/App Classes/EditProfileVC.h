@@ -14,6 +14,10 @@
 #import "StoreVC.h"
 @interface EditProfileVC : UIViewController<UIScrollViewDelegate,UITextFieldDelegate,URLManagerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
+    
+    UIImageView * imgUnreadMessageCount;
+    UILabel * lblUnreadCount;
+    
     AppDelegate * appDelegate;
 
     UIImageView * navview;

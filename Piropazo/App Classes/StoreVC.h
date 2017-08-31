@@ -8,11 +8,33 @@
 
 #import <UIKit/UIKit.h>
 #import "StoreCell.h"
-@interface StoreVC : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+//In-App-Purchase
+#import "IAPHelper.h"
+#import "RageIAPHelper.h"
+#import <StoreKit/StoreKit.h>
+#import "MBProgressHUD.h"
+
+
+@interface StoreVC : UIViewController<UITableViewDataSource,UITableViewDelegate,SKProductsRequestDelegate,SKPaymentTransactionObserver,MBProgressHUDDelegate,URLManagerDelegate>
 {
     UIImageView * navview;
     UIImageView * imgBack;
 
     UITableView * tblStore;
+    
+    SKProductsRequest *productsRequest;
+    NSArray *validProducts;
+    
+    NSInteger selectedPlan;
+    
+    MBProgressHUD * HUD;
+    
+    UIActivityIndicatorView * placeActivityIndicator;
+
+    UIButton *buttonPurchase;
+    
+    NSString * strPurchasePlan;
+
 }
 @end

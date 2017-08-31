@@ -15,7 +15,9 @@
 #import "MBProgressHUD.h"
 #import "BackGrounVC.h"
 #import "Reachability.h"
+#import "UserDetailVC.h"
 #import <Fabric/Fabric.h>
+#import "ChatVC.h"
 #import <Crashlytics/Crashlytics.h>
 NSString * deviceTokenStr;
 NSString * appLatitude;
@@ -23,11 +25,16 @@ NSString * appLongitude;
 
 NSString *Custom_Regular;
 SplashVC * splashScreen;
+NSMutableArray * arrUnreadTotalCount;
 
 BOOL changeLanguage;
+NSString * isForRating;
+BOOL isForCrashLogout;
+BOOL IsPopAvialabecrashLogout;
+BOOL IsRatingpopUpAvialabe;
 
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,URLManagerDelegate>
 {
     UIView * viewNetworkConnectionPopUp;
     NSTimer * timerNetworkConnectionPopUp;
@@ -38,11 +45,27 @@ BOOL changeLanguage;
     MBProgressHUD * HUD;
     
     BOOL isFirstTimePOPUp;
+    
+    AppDelegate * appDelegate;
 
-
+    UIView * coverViewNotification;
+    
+    NSDictionary *  newPush ;
+    
+    NSString * strOtherFlowerUserName;
+    
+    BOOL isFromPushNotification;
+    
+    UIActivityIndicatorView * placeActivityIndicator;
+    
+    URBAlertView *alertViewForlogout;
+        
 }
 
 @property (strong, nonatomic) UIWindow *window;
+@property (nonatomic) BOOL isOnChatScreen;
+@property (nonatomic) BOOL isOtherUserdetailScreen;
+
 
 #pragma mark - Helper Methods
 -(UIColor *) colorWithHexString:(NSString *)stringToConvert;
@@ -56,7 +79,7 @@ BOOL changeLanguage;
 - (void) hideTabBar:(UITabBarController *) tabbarcontroller;
 - (void) showTabBar:(UITabBarController *) tabbarcontroller;
 -(CGSize)getSizeForText:(NSString*)givenText andWidth:(CGFloat)givenWidth andFontWeight:(CGFloat)fontWeight andFontSize:(CGFloat)fontSize;
-
+-(void)CallWebapiForLogout;
 #pragma mark - Internet status
 
 -(BOOL)getInternetStatus;

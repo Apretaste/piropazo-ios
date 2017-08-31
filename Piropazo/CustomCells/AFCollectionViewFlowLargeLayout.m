@@ -14,7 +14,12 @@
 {
     if (!(self = [super init])) return nil;
     
-    self.itemSize = CGSizeMake((DEVICE_WIDTH-30)/2,(DEVICE_HEIGHT-84)/3);
+    if (IS_IPHONE_4) {
+        self.itemSize = CGSizeMake((DEVICE_WIDTH-30)/2,(DEVICE_HEIGHT-24)/3);
+    }else{
+        self.itemSize = CGSizeMake((DEVICE_WIDTH-30)/2,(DEVICE_HEIGHT-84)/3);
+    }
+    
     self.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.minimumInteritemSpacing = 0.0f;
     self.minimumLineSpacing = 0.0f;

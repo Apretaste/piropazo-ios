@@ -63,7 +63,7 @@ typedef enum ScrollDirection {
 #define ALERT_TITLE @"Piropazo"
 
 #define OK_BTN @"OK"
-#define ALERT_CANCEL  @"Cancel"
+#define ALERT_CANCEL  [TSLanguageManager localizedString:@"Cancel"]
 #define ALERT_DELETE  @"Delete"
 #define ALERT_EDIT  @"Edit"
 #define ALERT_PUSH_TO_ACCOUNT  @"Push to Accounts"
@@ -84,6 +84,9 @@ typedef enum ScrollDirection {
 
 #define CURRENT_USER_LANGUAGE [[NSUserDefaults standardUserDefaults] valueForKey:@"CURRENT_USER_LANGUAGE"]
 
+#define CURRENT_USER_FCM_TOKEN [[NSUserDefaults standardUserDefaults] valueForKey:@"CURRENT_USER_FCM_TOKEN"]
+
+
 #define CURRENT_USER_ID [[NSUserDefaults standardUserDefaults] valueForKey:@"CURRENT_USER_ID"]
 #define CURRENT_USER_ACCESS_TOKEN [[NSUserDefaults standardUserDefaults] valueForKey:@"CURRENT_USER_ACCESS_TOKEN"]
 
@@ -94,7 +97,7 @@ typedef enum ScrollDirection {
 #define NEW_USER_STATUS [[NSUserDefaults standardUserDefaults] valueForKey:@"NEW_USER_STATUS"]
 #define GENDER_STATUS [[NSUserDefaults standardUserDefaults] valueForKey:@"GENDER_STATUS"]
 #define USER_IMAGE [[NSUserDefaults standardUserDefaults] valueForKey:@"USER_IMAGE"]
-
+#define LAST_MESSAGE_ID [[NSUserDefaults standardUserDefaults] valueForKey:@"LAST_MESSAGE_ID"]
 
 
 #pragma mark - Color Codes------------------------------
@@ -112,6 +115,7 @@ typedef enum ScrollDirection {
 #define App_Background_color @"d3d3d3"
 #define App_Header_Color @"FFFFFF"
 #define header_font_color @"3C905A"
+#define light_red_color @"f26522"
 
 #define color_search_bar_textfield_bg @"FFFFFF"
 
@@ -122,14 +126,15 @@ typedef enum ScrollDirection {
 #define navigationBackgroundcolor [UIColor colorWithRed:253/255.0 green:253/255.0 blue:253/255.0 alpha:1.0]
 
 #define borderLineRegistration [UIColor colorWithRed:99/255.0 green:111/255.0 blue:253/112.0 alpha:1.0]
-#define merunRed [UIColor colorWithRed:121/255.0 green:61/255.0 blue:61/112.0 alpha:1.0]
+#define merunRed [UIColor colorWithRed:78/255.0 green:23/255.0 blue:24/112.0 alpha:1.0]
 #define infoButtonColor [UIColor colorWithRed:185/255.0 green:185/255.0 blue:185/255.0 alpha:1.0]
 #define SwipeRedColor [UIColor colorWithRed:243/255.0 green:123/255.0 blue:97/255.0 alpha:1.0]
 #define SwipeGreenColor [UIColor colorWithRed:106/255.0 green:148/255.0 blue:84/255.0 alpha:1.0]
 #define TextBoxColor [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1.0]
+#define RatingButtonColor [UIColor colorWithRed:4/255.0 green:152/255.0 blue:137/255.0 alpha:1.0]
 
 
-
+ //4/152/137
 #pragma mark - Images------------------------------------
 #define Image_App_Background @""
 #define Icon_Stats @"icon_stats.png"

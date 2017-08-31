@@ -25,8 +25,8 @@
 {
     lblintrstsadd = [[ UILabel alloc]initWithFrame:CGRectMake(5, 3, 100, 20)];
     lblintrstsadd.textColor = [UIColor blackColor];
-    lblintrstsadd.text = @"Bedrooms";
-    lblintrstsadd.font = [UIFont systemFontOfSize:15];
+    lblintrstsadd.text = @"";
+    lblintrstsadd.font = [UIFont systemFontOfSize:17];
     [self.contentView addSubview:lblintrstsadd];
     
     lblSeperator = [[ UILabel alloc]initWithFrame:CGRectMake(5, self.contentView.frame.size.height-0.5, self.contentView.frame.size.width,0.5 )];

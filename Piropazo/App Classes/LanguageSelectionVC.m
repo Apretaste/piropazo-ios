@@ -16,12 +16,13 @@
 @implementation LanguageSelectionVC
 
 #pragma mark - Life Cycle
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     [self setFrame];
-
 }
+
 #pragma mark - FramesSetting
 -(void)setFrame {
     

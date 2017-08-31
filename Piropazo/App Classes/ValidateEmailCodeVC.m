@@ -8,6 +8,10 @@
 
 #import "ValidateEmailCodeVC.h"
 #import "TSLanguageManager.h"
+#import <UserNotifications/UserNotifications.h>
+#import <Firebase.h>
+#import <FirebaseInstanceID/FirebaseInstanceID.h>
+#import <FirebaseMessaging/FirebaseMessaging.h>
 @interface ValidateEmailCodeVC ()
 
 @end
@@ -20,8 +24,9 @@
     
     changeLanguage = NO;
 
-    [self setNavigationViewFrames];
     [self setFrame];
+    [self setNavigationViewFrames];
+
     [self setShiftingPasscodeView];
     [self registerForKeyboardNotifications];
     [self hideLockView:NO];
@@ -35,6 +40,23 @@
     navview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 64)];
     navview.backgroundColor =navigationBackgroundcolor;
     navview.userInteractionEnabled=YES;
+    // *** Set masks bounds to NO to display shadow visible ***
+    navview.layer.masksToBounds = NO;
+    // *** Set light gray color as shown in sample ***
+    navview.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    // *** *** Use following to add Shadow top, left ***
+    //    self.avatarImageView.layer.shadowOffset = CGSizeMake(-5.0f, -5.0f);
+    
+    // *** Use following to add Shadow bottom, right ***
+    navview.layer.shadowOffset = CGSizeMake(5.0f, 0.0f);
+    
+    // *** Use following to add Shadow top, left, bottom, right ***
+    // avatarImageView.layer.shadowOffset = CGSizeZero;
+    navview.layer.shadowRadius = 5.0f;
+    
+    // *** Set shadowOpacity to full (1) ***
+    navview.layer.shadowOpacity = 1.0f;
+
     [self.view addSubview:navview];
     
     UIImageView * imgLogo = [[UIImageView alloc]initWithFrame:CGRectMake((DEVICE_WIDTH/2)-(114/2), (64/2)-(24/7), 114, 27)];
@@ -443,16 +465,58 @@
     [btnContinue setEnabled:NO];
     [activityIndicator startAnimating];
     
+    if ([deviceTokenStr isEqualToString:@"(null)"] || deviceTokenStr == nil || [deviceTokenStr isEqualToString:@""] ) {
+            NSString *fcmToken = [FIRMessaging messaging].FCMToken;
+            deviceTokenStr = fcmToken;
+    }
+    
+//    NSString *fcmToken = [FIRMessaging messaging].FCMToken;
+//    deviceTokenStr = fcmToken;
+    
     NSString * webServiceName = @"api/auth";
     
     NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
     
     [parameter_dict setObject:CURRENT_USER_EMAIL forKey:@"email"];
     [parameter_dict setObject:[_passcodeField text] forKey:@"pin"];
+    if (deviceTokenStr !=nil) {
+        [parameter_dict setObject:deviceTokenStr forKey:@"appid"];
+    }
+    [parameter_dict setObject:@"Piropazo" forKey:@"appname"];
     
     URLManager *manager = [[URLManager alloc] init];
     manager.delegate = self;
     manager.commandName = @"sendCodeByEmail";
+    [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
+}
+
+#pragma mark - WebserviceCalling
+-(void)callWebapiForLanguage {
+    NSString * webServiceName = @"run/api";
+    
+    // Checking user logged in or not
+    NSLog(@"userToken==%@",CURRENT_USER_ACCESS_TOKEN);
+    [[NSBundle mainBundle] preferredLocalizations];
+    NSString *languageSyatem = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+    
+    NSString * strLang = @"";
+    NSLog(@"language==>%@",languageSyatem);
+    if ([languageSyatem isEqualToString:@"es"]) {
+        strLang= @"es";
+        
+    }else{
+        strLang= @"en";
+    }
+    
+    NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
+    NSString * strLangusgae = [NSString stringWithFormat:@"perfil LANG %@",strLang];
+    
+    [parameter_dict setObject:strLangusgae forKey:@"subject"];
+    [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
+    
+    URLManager *manager = [[URLManager alloc] init];
+    manager.delegate = self;
+    manager.commandName = @"Languagechange";
     [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
 }
 #pragma mark Response
@@ -470,6 +534,11 @@
             [userDefaults setObject:strUserToken forKey:@"CURRENT_USER_ACCESS_TOKEN"];
             [userDefaults synchronize];
             
+            if([CURRENT_USER_ACCESS_TOKEN isEqual:[NSNull null]] || [CURRENT_USER_ACCESS_TOKEN isEqualToString:@""] || CURRENT_USER_ACCESS_TOKEN == nil || [CURRENT_USER_ACCESS_TOKEN isEqualToString:@"(null)"])
+            {
+            }else{
+                [self callWebapiForLanguage];
+            }
             
           if ([NEW_USER_STATUS isEqualToString:@"false"])
             {
@@ -493,6 +562,8 @@
             }];
             [alertView showWithAnimation:URBAlertAnimationTopToBottom];
         }
+    }else if ([[result valueForKey:@"commandName"] isEqualToString:@"Languagechange"]){
+        
     }
   
 //    else

@@ -24,9 +24,9 @@
     arrInterstSelection = [[NSMutableArray alloc] init];
     isShow = NO;
     ImageSelected = NO;
-    [self SetNavigationbar];
     [self setFrame];
-  
+    [self SetNavigationbar];
+
   //========================= SexArray =======================//
     arrSex = [[NSMutableArray alloc]init];
     NSMutableDictionary * dicMale = [[NSMutableDictionary alloc]init];
@@ -721,7 +721,7 @@
     [arrStates addObject:dicArkansas];
     [arrStates addObject:dicCalifornia];
     [arrStates addObject:dicColorado];
-    [arrStates addObject:dicCienfuegos];
+   // [arrStates addObject:dicCienfuegos];//ajay
     [arrStates addObject:dicConnecticut];
     [arrStates addObject:dicDelaware];
     [arrStates addObject:dicFlorida];
@@ -846,19 +846,25 @@
     [arrReligion addObject:dicBuddhism];
     [arrReligion addObject:dicOther5];
     
-    //===========================================================//
-    
-    [self setDetailPickerViews];
-    [self ShowTransperentForFloewrs];
-    [self ShowTransperentCrown];
+  
 
    /* [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MoveNotificationtab" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(MoveNotificationtab:) name:@"MoveNotificationtab" object:nil];
     */
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"CallwebapiIncrementHeatrCount" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(CallwebapiIncrementHeatrCount)
+                                                 name:@"CallwebapiIncrementHeatrCount"
+                                               object:nil];
+    
+    [self setDetailPickerViews];
+
     isFromimagePicker = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated {
+    
     
     if ([_strisFrom isEqualToString:@"YES"]) {
     [APP_DELEGATE hideTabBar:self.tabBarController];
@@ -869,6 +875,38 @@
         [navview addSubview:btnBack];
         
         imgBack.frame = CGRectMake(0, 64, DEVICE_WIDTH, DEVICE_HEIGHT-64);
+        
+    }else{
+    
+        //===========================================================//
+        imgUnreadMessageCount = [[UIImageView alloc]initWithFrame:CGRectMake((DEVICE_WIDTH/2), DEVICE_HEIGHT-49, 35, 25)];
+        imgUnreadMessageCount.image = [UIImage imageNamed:@"chat-notification.png"];
+        imgUnreadMessageCount.hidden = YES;
+        [[appDelegate window] addSubview:imgUnreadMessageCount];
+        
+        lblUnreadCount = [[UILabel alloc]init];
+        lblUnreadCount.hidden = YES;
+        lblUnreadCount.frame = CGRectMake((DEVICE_WIDTH/2), DEVICE_HEIGHT-51, 35, 25);
+        lblUnreadCount.textColor = [UIColor whiteColor];
+        lblUnreadCount.font = [UIFont boldSystemFontOfSize:18];
+        lblUnreadCount.textAlignment = NSTextAlignmentCenter;
+        //lblUnreadCount.frame = imgUnreadMessageCount.frame;
+        [[appDelegate window] addSubview:lblUnreadCount];
+        
+//        if ([arrUnreadTotalCount count]>0) {
+//            NSLog(@"arrUnreadTotalCount%@",arrUnreadTotalCount);
+//            imgUnreadMessageCount.hidden = NO;
+//            lblUnreadCount.hidden = NO;
+//            
+//            lblUnreadCount.text = [NSString stringWithFormat:@"%lu",[arrUnreadTotalCount count]];
+//        }
+//        else{
+//            imgUnreadMessageCount.hidden = YES;
+//            lblUnreadCount.hidden = YES;
+//            
+//        }
+        
+        [self unreadcount];
     }
     
     changeLanguage = NO;
@@ -878,16 +916,30 @@
     else{
         [self upDatewebserviceCalling];
     }
+    
+    [self ShowTransperentForFloewrs];
+    [self ShowTransperentCrown];
 }
-
+-(void)viewWillDisappear:(BOOL)animated {
+    imgUnreadMessageCount.hidden = YES;
+    lblUnreadCount.hidden = YES;
+    [imgUnreadMessageCount removeFromSuperview];
+    [lblUnreadCount removeFromSuperview];
+}
 -(void)viewDidDisappear:(BOOL)animated {
+    [imgUnreadMessageCount removeFromSuperview];
+    [lblUnreadCount removeFromSuperview];
+    
     isFromimagePicker = NO;
     [self hideKeyboard];
 }
--(void)viewDidAppear:(BOOL)animated{
-    
+
+-(void)CallwebapiIncrementHeatrCount{
+    [self unreadcount];
 }
 -(void)ShowTransperentForFloewrs {
+    
+    
     viewTransperent = [[UIView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH,DEVICE_HEIGHT)];
     viewTransperent.backgroundColor = [UIColor clearColor];
     viewTransperent.hidden = YES;
@@ -922,6 +974,9 @@
     [viewTransperent addSubview:viewShadow2];
     
     UILabel * lblMessage = [[UILabel alloc]initWithFrame:CGRectMake(20,( viewTransperent.frame.size.height/2)-(100/2), viewTransperent.frame.size.width-40, 100)];
+    if(IS_IPHONE_4 || IS_IPHONE_5){
+       lblMessage.frame = CGRectMake(20,( viewTransperent.frame.size.height/2)-(100/2), viewTransperent.frame.size.width-40, 130);
+    }
     lblMessage.numberOfLines = 0;
     lblMessage.textColor = darkGayColor;
     lblMessage.backgroundColor = [UIColor clearColor];
@@ -946,13 +1001,13 @@
     UIImageView * imgFlowrePop = [[UIImageView alloc]initWithFrame:CGRectMake((viewTransperent.frame.size.width/2)-(23/2),lblMessage.frame.origin.y-42, 23, 37)];
     imgFlowrePop.image = [UIImage imageNamed:@"Flower-button.png"];
     [viewTransperent addSubview:imgFlowrePop];
-
     
     [[appDelegate window] addSubview:viewTransperent];
 }
 
 -(void)ShowTransperentCrown
 {
+    
     viewTransperentCrown = [[UIView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH,DEVICE_HEIGHT)];
     viewTransperentCrown.backgroundColor = [UIColor clearColor];
     viewTransperentCrown.hidden = YES;
@@ -976,7 +1031,7 @@
     viewShadow.layer.shadowOffset = CGSizeMake(3, 3);
     viewShadow.layer.shadowOpacity = 5.0;
     viewShadow.layer.shadowRadius = 5.0;
-    viewShadow.frame = viewShadow.frame;
+    viewShadow.frame = viewTransperentCrown.frame;
     viewShadow.backgroundColor = [UIColor whiteColor];
     [viewTransperentCrown addSubview:viewShadow];
     
@@ -986,11 +1041,14 @@
     [viewShadow2 setBackgroundColor:[[UIColor whiteColor] colorWithAlphaComponent:0.9]];
     [viewTransperentCrown addSubview:viewShadow2];
     
-    UILabel * lblMessageCrown = [[UILabel alloc]initWithFrame:CGRectMake(20,( viewTransperentCrown.frame.size.height/2)-(100/2), viewTransperentCrown.frame.size.width-40, 100)];
+    UILabel * lblMessageCrown = [[UILabel alloc]initWithFrame:CGRectMake(20,( viewTransperentCrown.frame.size.height/2)-(100/2), viewTransperentCrown.frame.size.width-40, 120)];
+    if(IS_IPHONE_4 || IS_IPHONE_5){
+        lblMessageCrown.frame = CGRectMake(20,( viewTransperent.frame.size.height/2)-(100/2), viewTransperent.frame.size.width-40, 130);
+    }
     lblMessageCrown.numberOfLines = 0;
     lblMessageCrown.textColor = darkGayColor;
     lblMessageCrown.backgroundColor = [UIColor clearColor];
-    lblMessageCrown.text = [TSLanguageManager localizedString:@"profile_popup_flower"];
+    lblMessageCrown.text = [TSLanguageManager localizedString:@"We will add a nice crown to your head for the next three days, and besides looking great, you will be shown way more often to other people, increasing your chances to get requests."];
     lblMessageCrown.textAlignment = NSTextAlignmentCenter;
     [viewTransperentCrown addSubview:lblMessageCrown];
     
@@ -1010,7 +1068,7 @@
     
     UIButton * btnCrownPopCancelClick = [UIButton buttonWithType:UIButtonTypeCustom];
     btnCrownPopCancelClick.frame = CGRectMake(widthview+5,lblMessageCrown.frame.origin.y+lblMessageCrown.frame.size.height+5, widthview-10,35);
-    [btnCrownPopCancelClick setTitle:@"Cancel" forState:UIControlStateNormal];
+    [btnCrownPopCancelClick setTitle:[TSLanguageManager localizedString:@"Cancel"] forState:UIControlStateNormal];
     //    [btnFlowerClick setBackgroundImage:[APP_DELEGATE colorWithHexString:violetgreenColor] forState:UIControlStateNormal];
     [btnCrownPopCancelClick setBackgroundColor:darkGayColor];
     btnCrownPopCancelClick.layer.cornerRadius = 5.0;
@@ -1091,9 +1149,9 @@
         [alertView showWithAnimation:Alert_Animation_Type];
         
     }
-    else if ([txtCountry.text isEqualToString:[TSLanguageManager localizedString:@"Cuba"]])
+    else if ([strCountryKeyWord isEqualToString:@"CU"])
     {
-        if ([txtCivilProvision.text isEqualToString:@""]) {
+        if ([txtState.text isEqualToString:@""]) {
             URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please enter Province"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
             [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:12]];
             [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
@@ -1104,10 +1162,10 @@
         }
         else{
             [self callWebapiforUpdateProfile];
-            [self callWebapiforUpdateImage];
+            //[self callWebapiforUpdateImage];
         }
     }
-    else if ([txtCountry.text isEqualToString:[TSLanguageManager localizedString:@"U.S.A"]])
+    else if ([strCountryKeyWord isEqualToString:@"US"])
     {
         if ([txtState.text isEqualToString:@""]) {
             URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please enter State"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
@@ -1121,59 +1179,25 @@
         }
         else{
             [self callWebapiforUpdateProfile];
-            [self callWebapiforUpdateImage];
+            //[self callWebapiforUpdateImage];
         }
     }
     else
     {
         //[self CallwebServiceforEmail];
         [self callWebapiforUpdateProfile];
-        [self callWebapiforUpdateImage];    }
+        //[self callWebapiforUpdateImage];
+    }
 }
 -(void)btnStoreClicked:(id)sender
 {
-    //Work in progress
-    /*StoreVC * store = [[StoreVC alloc]init];
+    StoreVC * store = [[StoreVC alloc]init];
     
-    [self.navigationController pushViewController:store animated:YES];*/
+    [self.navigationController pushViewController:store animated:YES];
 }
 -(void)btnlogoutClicked:(id)sender
 {
-//    URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:@"Are you sure want to Logout" cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
-//    [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
-//    [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
-//        [alertView hideWithCompletionBlock:^{
-//            if (buttonIndex == 0) {
-//                BOOL isNetAvaliable = [(AppDelegate *)[[UIApplication sharedApplication]delegate] getInternetStatus];
-//                if (isNetAvaliable == NO)
-//                {
-//                }else{
-//                    [btnlogoutButton setEnabled:NO];
-//                    [activityIndicatorForlogout startAnimating];
-//                    
-//                    NSString * webServiceName = @"api/logout";
-//                    
-//                    NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
-//                    
-//                    if (CURRENT_USER_ACCESS_TOKEN != nil || CURRENT_USER_ACCESS_TOKEN != [NSNull null])
-//                    {
-//                        [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
-//                    }
-//                    else
-//                    {
-//                        [parameter_dict setObject:@"" forKey:@"token"];
-//                    }
-//                    
-//                    URLManager *manager = [[URLManager alloc] init];
-//                    manager.delegate = self;
-//                    manager.commandName = @"Logout";
-//                    [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
-//                }
-//            }
-//        }];
-//    }];
-//    [alertView showWithAnimation:URBAlertAnimationTopToBottom];
-    
+
     URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Are you sure want to Logout"] cancelButtonTitle:ALERT_CANCEL otherButtonTitles: OK_BTN, nil];
     [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:12]];
     [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
@@ -1185,7 +1209,7 @@
                 }else{
                     [btnlogoutButton setEnabled:NO];
                     [activityIndicatorForlogout startAnimating];
-                    
+                    //isForCrashLogout = YES;
                     NSString * webServiceName = @"api/logout";
                     
                     NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
@@ -1238,6 +1262,22 @@
     navview = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, DEVICE_WIDTH, 64)];
     navview.backgroundColor =navigationBackgroundcolor;
     navview.userInteractionEnabled=YES;
+    // *** Set masks bounds to NO to display shadow visible ***
+    navview.layer.masksToBounds = NO;
+    // *** Set light gray color as shown in sample ***
+    navview.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    // *** *** Use following to add Shadow top, left ***
+    //    self.avatarImageView.layer.shadowOffset = CGSizeMake(-5.0f, -5.0f);
+    
+    // *** Use following to add Shadow bottom, right ***
+    navview.layer.shadowOffset = CGSizeMake(5.0f, 0.0f);
+    
+    // *** Use following to add Shadow top, left, bottom, right ***
+    // avatarImageView.layer.shadowOffset = CGSizeZero;
+    navview.layer.shadowRadius = 5.0f;
+    
+    // *** Set shadowOpacity to full (1) ***
+    navview.layer.shadowOpacity = 1.0f;
     [self.view addSubview:navview];
     
     UIImageView * imgLogo = [[UIImageView alloc]initWithFrame:CGRectMake((DEVICE_WIDTH/2)-(114/2), (64/2)-(24/7), 114, 27)];
@@ -1247,7 +1287,7 @@
 }
 -(void)setFrame {
    
-    imgBack = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, DEVICE_WIDTH, DEVICE_HEIGHT-64-50)];
+    imgBack = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, DEVICE_WIDTH, DEVICE_HEIGHT-64-49)];
     imgBack.userInteractionEnabled = YES;
     imgBack.image = [UIImage imageNamed:[[NSUserDefaults standardUserDefaults] stringForKey:@"backGroundimage"]];
     [self.view addSubview:imgBack];
@@ -1341,11 +1381,14 @@
 
     
      activityIndicatorForSave = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+
     activityIndicatorForlogout = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    activityIndicatorForlogout.color = violetgreenColor;;
+
    
     placeActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake((imgBack.frame.size.width/2)-(30/2), (imgBack.frame.size.height/2)-(30/2), 30, 30)];
     [placeActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    placeActivityIndicator.color = UIActivityIndicatorViewStyleWhiteLarge;;
+    placeActivityIndicator.color = violetgreenColor;;
     [imgBack addSubview:placeActivityIndicator];
 
 }
@@ -1399,15 +1442,24 @@
 
         if ([strGender isEqualToString:@"F"])
         {
-            [imgProfile setImageWithURL:[NSURL URLWithString:strImageUrl] placeholderImage:[UIImage imageNamed:@"female_avtar.png"]];
-
-        }
+//            [imgProfile setImageWithURL:[NSURL URLWithString:strImageUrl] placeholderImage:[UIImage imageNamed:@"female_avtar.png"]];
+            imgProfile.image = nil;
+            imgProfile.image = [UIImage imageNamed:@"female_avtar.png"];
+            
+            imgProfile.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"picture_public"]]];
+            
+                   }
         else{
             
-            [imgProfile setImageWithURL:[NSURL URLWithString:strImageUrl] placeholderImage:[UIImage imageNamed:@"male_avtar.png"]];
+//            [imgProfile setImageWithURL:[NSURL URLWithString:strImageUrl] placeholderImage:[UIImage imageNamed:@"male_avtar.png"]];
+            imgProfile.image = nil;
+
+            imgProfile.image = [UIImage imageNamed:@"male_avtar.png"];
+            
+            imgProfile.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"picture_public"]]];
         }
         
-        ImageSelected = YES;
+        //ImageSelected = YES;
 
     }else{
         if ([strGender isEqualToString:@"F"])
@@ -1418,7 +1470,7 @@
         {
             imgProfile.image = [UIImage imageNamed:@"male_avtar.png"];
         }
-        ImageSelected = NO;
+       // ImageSelected = NO;
 
     }
     [scrlContent addSubview:imgProfile];
@@ -1596,15 +1648,16 @@
     txtLanguage.font=[UIFont systemFontOfSize:15];
     txtLanguage.autocorrectionType = UITextAutocorrectionTypeNo;
     [txtLanguage setAttributedPlaceholder:attributedString];
+    txtLanguage.userInteractionEnabled = NO;
     [imgLanguageTextBox addSubview:txtLanguage];
     
-    btnChangeLanguage.frame = CGRectMake(txtLanguage.frame.size.width-100, 0, 100, 50);
-    [btnChangeLanguage setTitle:@"Change" forState:UIControlStateNormal];
+    btnChangeLanguage.frame = CGRectMake(imgLanguageTextBox.frame.size.width-100, 0, 100, 50);
+    [btnChangeLanguage setTitle:[TSLanguageManager localizedString:@"Change"] forState:UIControlStateNormal];
     btnChangeLanguage.titleLabel.font = [UIFont fontWithName:@"AvenirNextCondensed-Italic" size:20.0];
     btnChangeLanguage.titleLabel.font = [UIFont boldSystemFontOfSize:18.0];
     [btnChangeLanguage setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
     [btnChangeLanguage addTarget:self action:@selector(btnChangeLanguageClikced:) forControlEvents:UIControlEventTouchUpInside];
-    [txtLanguage addSubview:btnChangeLanguage];
+    [imgLanguageTextBox addSubview:btnChangeLanguage];
     
     NSLog(@"Presentlan==>%@",[TSLanguageManager selectedLanguage]);
 
@@ -1666,28 +1719,28 @@
     
     NSString * strSex = @"";
     
-    if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
+//    if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
 
     if([[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]isEqualToString:@""]){
         
-        strLanguage = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]];
-        if ([strLanguage isEqualToString:@"M"]) {
+        strSex = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]];
+        }
+    
+    if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
+            if ([strSex isEqualToString:@"M"]) {
             strSex = [[arrSex objectAtIndex:0]valueForKey:@"English_name"];
-        }
-        else{
+            }
+            else{
             strSex = [[arrSex objectAtIndex:1]valueForKey:@"English_name"];
+            }
+        }else{
+            if ([strSex isEqualToString:@"M"]) {
+                strSex = [[arrSex objectAtIndex:0]valueForKey:@"Spanish_name"];
+            }
+            else{
+                strSex = [[arrSex objectAtIndex:1]valueForKey:@"Spanish_name"];
+            }
         }
-      }
-    }
-    else{
-        strLanguage = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]];
-        if ([strLanguage isEqualToString:@"M"]) {
-            strSex = [[arrSex objectAtIndex:0]valueForKey:@"Spanish_name"];
-        }
-        else{
-            strSex = [[arrSex objectAtIndex:1]valueForKey:@"Spanish_name"];
-        }
-    }
     
     txtSex.text = strSex;
     
@@ -1758,7 +1811,7 @@
     btnSexOrient.backgroundColor=[UIColor clearColor];
     btnSexOrient.tag = 1;
     [btnSexOrient addTarget:self action:@selector(btnSexClicked:) forControlEvents:UIControlEventTouchUpInside];
-    btnSexOrient.frame=txtSexOrientation.frame;
+    btnSexOrient.frame = CGRectMake(10,0, imgSexOrienationTextBox.frame.size.width-20, 50);
     [imgSexOrienationTextBox addSubview:btnSexOrient];
     
     selectedSexualOrientationHeight = yy;
@@ -1790,7 +1843,7 @@
     txtBirthDay.font=[UIFont systemFontOfSize:15];
     txtBirthDay.autocorrectionType = UITextAutocorrectionTypeNo;
     [txtBirthDay setAttributedPlaceholder:attributedString];
-//App Test
+
     //txtLanguage.returnKeyType=UIReturnKeyNext;
     [imgBirthdayTextBox addSubview:txtBirthDay];
     
@@ -1798,9 +1851,11 @@
     
     if([[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]isEqualToString:@""]){
         strBirthday = [NSString stringWithFormat:@"%@",[self todatetimonly:[[dicDetails valueForKey:@"profile"]valueForKey:@"date_of_birth"]]];
+        selectedDate = strBirthday;
     }
     
     txtBirthDay.text = strBirthday;
+    
     
      imgBirthDownArrow.frame = CGRectMake(txtBirthDay.frame.size.width-20, (txtBirthDay.frame.size.height/2)-(12/2), 15, 12);
     imgBirthDownArrow.image = [UIImage imageNamed:@"downward facing arrow"];
@@ -2322,7 +2377,6 @@
 
     //txtLanguage.returnKeyType=UIReturnKeyNext;
     [imgCountryTextBox addSubview:txtCountry];
-    
     NSString * strCountry = @"";
     
     if([[dicDetails valueForKey:@"profile"]valueForKey:@"country"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"country"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"country"]isEqualToString:@""]){
@@ -2360,20 +2414,18 @@
     //==============================================//
 
     //================== State/provision ================//
-    
-   
-    
+
     StartForStateandProvience = yy+imgCountryTextBox.frame.size.height+5;
     
     NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
     
-    if ([strCountry isEqualToString:@"Cuba"] || [strCountry isEqualToString:@"U.S.A"] ) {
+    if ([strCountry isEqualToString:@"Cuba"] || [strCountry isEqualToString:@"U.S.A"] || [strCountry isEqualToString:@"Estados Unidos"]) {
         
          yy = yy+imgCountryTextBox.frame.size.height+5;NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
         
         NSString * strProvience = @"";
         if ([strCountry isEqualToString:@"Cuba"]) {
-            
+            strCountryKeyWord = @"CU";
             labelText = [TSLanguageManager localizedString:@"Province"];
             
             if([[dicDetails valueForKey:@"profile"]valueForKey:@"province"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"province"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"province"]isEqualToString:@""]){
@@ -2394,10 +2446,11 @@
                 }
             }
         }else{
-            
+            strCountryKeyWord = @"US";
+
             //StartForStateandProvience = yy;
              NSLog(@"StartForStateandProvience==>%ld",(long)StartForStateandProvience);
-            labelText = [TSLanguageManager localizedString:@"usstate"];
+            labelText = [TSLanguageManager localizedString:@"State"];
             
             if([[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]!=nil && [[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]!=[NSNull null] && ![[[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]isEqualToString:@""]){
                 strProvience = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"usstate"]];
@@ -2578,8 +2631,22 @@
         strReligion = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"religion"]];
     }
    
+    for(int i=0; i<[arrReligion count]; i++)
+    {
+        if ([[[arrReligion objectAtIndex:i]valueForKey:@"KeyWord"] isEqualToString:strReligion])
+        {
+            if ([[TSLanguageManager selectedLanguage] isEqualToString:kLMEnglish]) {
+                strReligion = [[arrReligion objectAtIndex:i]valueForKey:@"English_name"];
+            }
+            else{
+                strReligion = [[arrReligion objectAtIndex:i]valueForKey:@"Spanish_name"];
+            }
+            NSLog(@"index==>%@",strReligion);
+        }
+    }
+
     txtReligion.text = strReligion;
-    
+
     imageReligionDropdown.frame  = CGRectMake(txtReligion.frame.size.width-20, (txtReligion.frame.size.height/2)-(12/2), 15, 12);
     imageReligionDropdown.image = [UIImage imageNamed:@"downward facing arrow"];
     [txtReligion addSubview:imageReligionDropdown];
@@ -2998,6 +3065,9 @@
     //[datePicker setMaximumDate:[NSDate date]];
     datePicker.datePickerMode = UIDatePickerModeDate;
     NSCalendar * gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/YYYY"];
     NSDate * currentDate = [NSDate date];
     NSDateComponents * comps = [[NSDateComponents alloc] init];
     [comps setYear: -18];
@@ -3007,10 +3077,12 @@
     
     datePicker.minimumDate = minDate;
     datePicker.maximumDate = maxDate;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd/MM/YYYY"];
-    NSString *dateStr = [dateFormatter stringFromDate:currentDate];
-    selectedDate=dateStr;
+    NSString *dateStr = [dateFormatter stringFromDate:maxDate];
+    if(![selectedDate isEqualToString:@""] && selectedDate!=nil){
+        
+    }else{
+         selectedDate=dateStr;
+    }
     NSLog(@"selectedDate====>%@",selectedDate);
     [datePicker setDate:[dateFormatter dateFromString:selectedDate]];
     [viewBirthday addSubview:datePicker];
@@ -3195,23 +3267,23 @@
     [intrestView addSubview:backHeaderLbl2];
     
     UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(2, 3, 60, 44);
-    [cancelBtn setTitle:@"Cancel" forState:UIControlStateNormal];
+    cancelBtn.frame = CGRectMake(2, 3, 100, 44);
+    [cancelBtn setTitle:[TSLanguageManager localizedString:@"Cancel"] forState:UIControlStateNormal];
     [cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [cancelBtn addTarget:self action:@selector(clearBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [intrestView addSubview:cancelBtn];
     
     UIButton * btnsaveEmail = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnsaveEmail.frame = CGRectMake(intrestView.frame.size.width-46, 3, 44, 44);
-    [btnsaveEmail setTitle:@"Save" forState:UIControlStateNormal];
+    btnsaveEmail.frame = CGRectMake(intrestView.frame.size.width-70, 3, 60, 44);
+    [btnsaveEmail setTitle:[TSLanguageManager localizedString:@"Save"] forState:UIControlStateNormal];
     [btnsaveEmail addTarget:self action:@selector(btnsaveEmailClicked:) forControlEvents:UIControlEventTouchUpInside];
     [btnsaveEmail setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [intrestView addSubview:btnsaveEmail];
     
     UIColor *color = [UIColor grayColor];
     
-    txtAddIntrest =[[UITextField alloc]initWithFrame:CGRectMake(10,90, intrestView.frame.size.width-20, 25)];
-    txtAddIntrest.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Interests" attributes:@{NSForegroundColorAttributeName: color}];
+    txtAddIntrest =[[UITextField alloc]initWithFrame:CGRectMake(10,100, intrestView.frame.size.width-20, 25)];
+    txtAddIntrest.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[TSLanguageManager localizedString:@"Enter Interests"] attributes:@{NSForegroundColorAttributeName: color}];
     txtAddIntrest.textAlignment=NSTextAlignmentLeft;
     txtAddIntrest.delegate=self;
     txtAddIntrest.font = [UIFont systemFontOfSize:15];
@@ -3226,7 +3298,7 @@
     //    y= y+100;
     
     UILabel * fourthLine = [[UILabel alloc] init];
-    fourthLine.frame= CGRectMake(10, 116, intrestView.frame.size.width-50, 0.5);
+    fourthLine.frame= CGRectMake(10, 130, intrestView.frame.size.width-20, 0.5);
     fourthLine.backgroundColor = violetgreenColor;
     [intrestView addSubview:fourthLine];
     //
@@ -3236,13 +3308,14 @@
     [btnAddEmail setImage:[UIImage imageNamed:@"popup_plus_icon.png"] forState:UIControlStateNormal];
     [intrestView addSubview:btnAddEmail];
     
-    tblIntrests =[[UITableView alloc]initWithFrame:CGRectMake(10, 170, intrestView.frame.size.width-20, intrestView.frame.size.height-170)style:UITableViewStylePlain];
+    tblIntrests =[[UITableView alloc]initWithFrame:CGRectMake(10, 160, intrestView.frame.size.width-20, intrestView.frame.size.height-170)style:UITableViewStylePlain];
     tblIntrests.delegate = self;
     tblIntrests.dataSource = self;
     tblIntrests.userInteractionEnabled = YES;
     tblIntrests.scrollEnabled = YES;
     tblIntrests.layer.masksToBounds=YES;
     [intrestView addSubview:tblIntrests];
+    tblIntrests.showsVerticalScrollIndicator = NO;
     tblIntrests.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (arrinvite .count >0) {
         arrInterstSelection = [arrinvite mutableCopy];
@@ -3391,18 +3464,33 @@
 }
 -(void)btnChangeLanguageClikced:(id)sender
 {
+//    
+//    URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:@"Settings ==> General ==> Language & Region ==> Select iPhone Language" cancelButtonTitle:ALERT_CANCEL otherButtonTitles:OK_BTN , nil];
+//    [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
+//    [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
+//        [alertView hideWithCompletionBlock:^{
+//            if (buttonIndex == 1) {
+//                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=General&path=INTERNATIONAL"]];//ajay
+//            }
+//            
+//        }];
+//    }];
+//    [alertView showWithAnimation:URBAlertAnimationTopToBottom];
     //changeLanguage = YES;
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General"]];
-    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+//
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
     
-    URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:@"Work in progress.." cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
-    [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
-    [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
-        [alertView hideWithCompletionBlock:^{
-            
-        }];
-    }];
-    [alertView showWithAnimation:URBAlertAnimationTopToBottom];
+//    URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:@"Work in progress.." cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
+//    [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
+//    [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
+//        [alertView hideWithCompletionBlock:^{
+//            
+//        }];
+//    }];
+//    [alertView showWithAnimation:URBAlertAnimationTopToBottom];
 }
 
 #pragma mark - Animations
@@ -3432,6 +3520,133 @@
                             }
                         }
                         completion:^(BOOL finished) {
+                            int selectedIndex=0;
+
+                            if (myView == viewGendor) {
+                                for (int i=0; i<[arrSex count]; i++)
+                                {
+                                    if ([txtSex.text isEqualToString:[[arrSex objectAtIndex:i]valueForKey:@"English_name"]] || [txtSex.text isEqualToString:[[arrSex objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerGendor selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerGendor didSelectRow:selectedIndex inComponent:0];
+                            }
+                            else if (myView == viewGendorOrentation){
+                                for (int i=0; i<[arrGendorOreintation count]; i++)
+                                {
+                                    if ([txtSexOrientation.text isEqualToString:[[arrGendorOreintation objectAtIndex:i]valueForKey:@"English_name"]] || [txtSexOrientation.text isEqualToString:[[arrGendorOreintation objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerGendorOrientation selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerGendorOrientation didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewBody){
+                                for (int i=0; i<[arrBody count]; i++)
+                                {
+                                    if ([txtBody.text isEqualToString:[[arrBody objectAtIndex:i]valueForKey:@"English_name"]] || [txtBody.text isEqualToString:[[arrBody objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerBody selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerBody didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewEyes){
+                                for (int i=0; i<[arrEyes count]; i++)
+                                {
+                                    if ([txtEyes.text isEqualToString:[[arrEyes objectAtIndex:i]valueForKey:@"English_name"]] || [txtEyes.text isEqualToString:[[arrEyes objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerEye selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerEye didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewSkin){
+                                for (int i=0; i<[arrSkin count]; i++)
+                                {
+                                    if ([txtSkin.text isEqualToString:[[arrSkin objectAtIndex:i]valueForKey:@"English_name"]] || [txtSkin.text isEqualToString:[[arrSkin objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerSkin selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerSkin didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewHair){
+                                for (int i=0; i<[arrHair count]; i++)
+                                {
+                                    if ([txtHair.text isEqualToString:[[arrHair objectAtIndex:i]valueForKey:@"English_name"]] || [txtHair.text isEqualToString:[[arrHair objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerHair selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerHair didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewCivilstatus){
+                                for (int i=0; i<[arrCivilStatus count]; i++)
+                                {
+                                    if ([txtCivilStatus.text isEqualToString:[[arrCivilStatus objectAtIndex:i]valueForKey:@"English_name"]] || [txtCivilStatus.text isEqualToString:[[arrCivilStatus objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerCivilStatus selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerCivilStatus didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewSchoolstatus){
+                                for (int i=0; i<[arrSchool count]; i++)
+                                {
+                                    if ([txtSchool.text isEqualToString:[[arrSchool objectAtIndex:i]valueForKey:@"English_name"]] || [txtSchool.text isEqualToString:[[arrSchool objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerSchoolstatus selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerSchoolstatus didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewCountrys){
+                                for (int i=0; i<[arrCountry count]; i++)
+                                {
+                                    if ([txtCountry.text isEqualToString:[[arrCountry objectAtIndex:i]valueForKey:@"English_name"]] || [txtCountry.text isEqualToString:[[arrCountry objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerCountry selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerCountry didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewProvilence){
+                                for (int i=0; i<[arrProvience count]; i++)
+                                {
+                                    if ([txtState.text isEqualToString:[[arrProvience objectAtIndex:i]valueForKey:@"English_name"]] || [txtState.text isEqualToString:[[arrProvience objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerProvilence
+                                 selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerProvilence didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewStates){
+                                for (int i=0; i<[arrStates count]; i++)
+                                {
+                                    if ([txtState.text isEqualToString:[[arrStates objectAtIndex:i]valueForKey:@"English_name"]] || [txtState.text isEqualToString:[[arrStates objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerStates
+                                 selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerStates didSelectRow:selectedIndex inComponent:0];
+                            }else if (myView == viewReligion){
+                                for (int i=0; i<[arrReligion count]; i++)
+                                {
+                                    if ([txtReligion.text isEqualToString:[[arrReligion objectAtIndex:i]valueForKey:@"English_name"]] || [txtReligion.text isEqualToString:[[arrReligion objectAtIndex:i]valueForKey:@"Spanish_name"]])
+                                    {
+                                        selectedIndex=i;
+                                    }
+                                }
+                                [PickerReligion
+                                 selectRow:selectedIndex inComponent:0 animated:YES];
+                                [self pickerView:PickerReligion didSelectRow:selectedIndex inComponent:0];
+                            }
                         }];
     }
     else
@@ -3967,8 +4182,8 @@
         [PickerCountry reloadAllComponents];
         
         NSString *   labelText = @"";
-        if ([strSelctd isEqualToString:@"Cuba"] || [strSelctd isEqualToString:@"U.S.A"]) {
-            if ([strSelctd isEqualToString:@"Cuba"]) {
+        if ([strCountryKeyWord isEqualToString:@"CU"] || [strCountryKeyWord isEqualToString:@"US"]) {
+            if ([strCountryKeyWord isEqualToString:@"CU"]) {
                 txtState.text = @"";
                 labelText = [TSLanguageManager localizedString:@"Province"];
                 
@@ -4159,14 +4374,11 @@
     viewForSection.frame = CGRectMake(0, 0,tblIntrests.frame.size.width, 40);
     viewForSection.backgroundColor = violetgreenColor;;
     
-    
-    
     UILabel * lblHeader = [[UILabel alloc]initWithFrame:CGRectMake(8,0,200, 40)];
     lblHeader.textColor = [UIColor whiteColor];
-    lblHeader.text = @"List of interests";
-    [lblHeader setFont:[UIFont systemFontOfSize:13]];
+    lblHeader.text = [TSLanguageManager localizedString:@"List of interests"];
+    [lblHeader setFont:[UIFont systemFontOfSize:15]];
     [viewForSection addSubview:lblHeader];
-    
     
     return viewForSection;
 }
@@ -4175,7 +4387,6 @@
     if ([arrInterstSelection count]>0)
     {
         return 50;
-        
     }
     else
     {
@@ -4237,7 +4448,7 @@
         [tableView setScrollEnabled:YES];
 
         cell.lblintrstsadd.hidden = NO;
-        cell.lblSeperator.hidden = NO;
+        cell.lblSeperator.hidden = YES;
         cell.btnDeleteIntrset.hidden = NO;
         cell.lblintrstsadd.frame = CGRectMake(8,(50/2)-(25/2), cell.contentView.frame.size.width-16, 25);
         cell.lblintrstsadd.font = [UIFont systemFontOfSize:14];
@@ -4269,7 +4480,6 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
 }
 //- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 //{
@@ -4341,16 +4551,18 @@
     {
         imgProfile.image= image;
         [imgProfile setContentMode:UIViewContentModeScaleAspectFill];
+        
+        [self callWebapiforUpdateImage];
     }
     isFromimagePicker = YES;
-        ImageSelected = YES;
+        //ImageSelected = YES;
     [picker dismissModalViewControllerAnimated:YES];
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
-    ImageSelected = NO;
+    //ImageSelected = NO;
 }
 
 #pragma mark - WebserviceCalling
@@ -4375,7 +4587,7 @@
         
         URLManager *manager = [[URLManager alloc] init];
         manager.delegate = self;
-        manager.commandName = @"GettingPeopels";
+        manager.commandName = @"GettUserDetails";
         [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
         
         NSLog(@"parameter_dict==>%@",parameter_dict);
@@ -4466,23 +4678,123 @@
         }
         else{
         }
-        [parameter_Filed setObject:txtfname.text forKey:@"NOMBRE"];
-        [parameter_Filed setObject:strSexkeyWord forKey:@"SEXO"];
-        [parameter_Filed setObject:strSexOrinetationkeyWord forKey:@"ORIENTACION"];
+        
+        
+        
+    //============================//
+        if ([strSexkeyWord isEqualToString:@""]) {
+            
+            strSexkeyWord = @"";
+        }
+        else{
+            
+            [parameter_Filed setObject:strSexkeyWord forKey:@"SEXO"];
+        }
+        
+        if ([strSexOrinetationkeyWord isEqualToString:@""]) {
+            strSexOrinetationkeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strSexOrinetationkeyWord forKey:@"ORIENTACION"];
+
+        }
+        
+        if ([strBodykeyWord isEqualToString:@""]) {
+            strBodykeyWord = @"";
+        }
+        else{
+            
+            [parameter_Filed setObject:strBodykeyWord forKey:@"CUERPO"];
+        }
+        
+        if ([strEyekeyWord isEqualToString:@""]) {
+            strEyekeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strEyekeyWord forKey:@"OJOS"];
+        }
+        
+        if ([strHairkeyWord isEqualToString:@""]) {
+            strHairkeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strHairkeyWord forKey:@"PELO"];
+         }
+        
+        if ([strSkinkeyWord isEqualToString:@""]) {
+            strSkinkeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strSkinkeyWord forKey:@"PIEL"];
+        }
+        
+        if ([strCivilstatusKeyWord isEqualToString:@""]) {
+            strCivilstatusKeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strCivilstatusKeyWord forKey:@"ESTADO"];
+        }
+        
+        if ([strSchoolKeyWord isEqualToString:@""]) {
+            strSchoolKeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strSchoolKeyWord forKey:@"NIVEL"];
+        }
+        
+        if ([strCountryKeyWord isEqualToString:@""]) {
+            strCountryKeyWord = @"";
+        }
+        else{
+            [parameter_Filed setObject:strCountryKeyWord forKey:@"PAIS"];
+        }
+        
+        if ([strProvienceKeyWord isEqualToString:@""]) {
+            strProvienceKeyWord = @"";
+        }
+        else{
+        }
+        
+        if (strStateKeyWord == nil) {
+            strStateKeyWord = @"";
+        }
+        else{
+        }
+        
+        if ([strRelogionKeyWord isEqualToString:@""]) {
+            strRelogionKeyWord = @"";
+        }
+        else{
+            
+            [parameter_Filed setObject:strRelogionKeyWord forKey:@"RELIGION"];
+        }
+        
+        
+        if([strCountryKeyWord isEqualToString:@"CU"]){
+            [parameter_Filed setObject:strProvienceKeyWord forKey:@"PROVINCIA"];
+        }
+        
+        if ([strCountryKeyWord isEqualToString:@"US"]) {
+            [parameter_Filed setObject:strStateKeyWord forKey:@"USSTATE"];
+        }
+        
+        if (txtfname.text.length>0) {
+            [parameter_Filed setObject:txtfname.text forKey:@"NOMBRE"];
+        }
+        
+        if(txtCivilProvision.text.length>0){
+            [parameter_Filed setObject:txtCivilProvision.text forKey:@"PROFESION"];
+        }
+        if (lblInterst.text.length>0) {
+            [parameter_Filed setObject:lblInterst.text forKey:@"INTERESES"];
+
+        }
+        
+        if (txtCity.text.length>0) {
+            [parameter_Filed setObject:txtCity.text forKey:@"CIUDAD"];
+        }
+        
         [parameter_Filed setObject:txtBirthDay.text forKey:@"CUMPLEANOS"];
-        [parameter_Filed setObject:strBodykeyWord forKey:@"CUERPO"];
-        [parameter_Filed setObject:strEyekeyWord forKey:@"OJOS"];
-        [parameter_Filed setObject:strHairkeyWord forKey:@"PELO"];
-        [parameter_Filed setObject:strCivilstatusKeyWord forKey:@"ESTADO"];
-        [parameter_Filed setObject:strSchoolKeyWord forKey:@"NIVEL"];
-        [parameter_Filed setObject:txtCivilProvision.text forKey:@"PROFESION"];
-        [parameter_Filed setObject:txtCity.text forKey:@"CIUDAD"];
-        [parameter_Filed setObject:strCountryKeyWord forKey:@"PAIS"];
-        [parameter_Filed setObject:strProvienceKeyWord forKey:@"Province"];
-        [parameter_Filed setObject:strSkinkeyWord forKey:@"PIEL"];
-        [parameter_Filed setObject:strStateKeyWord forKey:@"State"];
-        [parameter_Filed setObject:lblInterst.text forKey:@"INTERESES"];
-        [parameter_Filed setObject:strRelogionKeyWord forKey:@"RELIGION"];
         
         NSString * strLang = [NSString stringWithFormat:@"%@",[TSLanguageManager selectedLanguage]];
         [parameter_Filed setObject:strLang forKey:@"LANG"];
@@ -4508,8 +4820,11 @@
         manager.delegate = self;
         manager.commandName = @"UpdateProfile";
         [manager postUrlCallForReg:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
+        
+        NSLog(@"parameter_dict==>%@",parameter_dict);
     }
 }
+
 -(void)callWebapiforUpdateImage
 {
     BOOL isNetAvaliable = [(AppDelegate *)[[UIApplication sharedApplication]delegate] getInternetStatus];
@@ -4519,28 +4834,33 @@
         [btnContinue setEnabled:NO];
         [activityIndicatorForSave startAnimating];
         
-        if (ImageSelected==NO)
-        {
-            URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please tap your avatar to take a picture before continuing"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
-            [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
-            [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
-                [alertView hideWithCompletionBlock:^{
-                    
-                }];
-            }];
-            [alertView showWithAnimation:URBAlertAnimationTopToBottom];
-        }
-        else
-        {
+//        if (ImageSelected==NO)
+//        {
+//            URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Please tap your avatar to take a picture before continuing"] cancelButtonTitle:OK_BTN otherButtonTitles: nil, nil];
+//            [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:14]];
+//            [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
+//                [alertView hideWithCompletionBlock:^{
+//                    
+//                }];
+//            }];
+//            [alertView showWithAnimation:URBAlertAnimationTopToBottom];
+//        }
+//        else
+//        {
             NSString * webServiceName = @"run/api";
             
-            NSData* data ;
+            //NSData* data ;
             
-            data = UIImageJPEGRepresentation(imgProfile.image, 0.2f);
-            
+//            data = UIImageJPEGRepresentation(imgProfile.image, 0.2f);
+//             NSString *strEncoded = [base encode:data];
+        
+        
+        NSString *base64String = [UIImageJPEGRepresentation(imgProfile.image, 0.2f)
+                                  base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+        
             NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
             [parameter_dict setObject:@"perfil FOTO" forKey:@"subject"];
-            [parameter_dict setObject:data forKey:@"attachment"];
+            [parameter_dict setObject:base64String forKey:@"attachment"];
             
             if (CURRENT_USER_ACCESS_TOKEN != nil || CURRENT_USER_ACCESS_TOKEN != [NSNull null]) {
                 [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
@@ -4554,7 +4874,7 @@
             manager.delegate = self;
             manager.commandName = @"ImageUploading";
             [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
-        }
+       // }
     }
 }
 -(void)callWebApiForCrownSetting
@@ -4578,6 +4898,63 @@
     [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
  
 }
+-(void)unreadcount
+{
+    BOOL isNetAvaliable = [(AppDelegate *)[[UIApplication sharedApplication]delegate] getInternetStatus];
+    if (isNetAvaliable == NO)
+    {
+    }else{
+        
+        NSString * webServiceName = @"run/api";
+        
+        NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
+        
+        [parameter_dict setObject:@"piropazo unread" forKey:@"subject"];
+        [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
+        
+        URLManager *manager = [[URLManager alloc] init];
+        manager.delegate = self;
+        manager.commandName = @"unreadMessages";
+        [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
+    }
+}
+//-(void)CallWebapiForLogout {
+//    
+//    URBAlertView *alertView = [[URBAlertView alloc] initWithTitle:ALERT_TITLE message:[TSLanguageManager localizedString:@"Your account is in use in another device. Please logout first."] cancelButtonTitle:OK_BTN otherButtonTitles:nil, nil];
+//    [alertView setMessageFont:[UIFont fontWithName:@"Arial" size:12]];
+//    [alertView setHandlerBlock:^(NSInteger buttonIndex, URBAlertView *alertView) {
+//        [alertView hideWithCompletionBlock:^{
+//            if (buttonIndex == 0) {
+//                BOOL isNetAvaliable = [(AppDelegate *)[[UIApplication sharedApplication]delegate] getInternetStatus];
+//                if (isNetAvaliable == NO)
+//                {
+//                }else{
+//                    
+//                    NSString * webServiceName = @"api/logout";
+//                    
+//                    NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
+//                    if (CURRENT_USER_ACCESS_TOKEN) {
+//                        if (CURRENT_USER_ACCESS_TOKEN != nil || CURRENT_USER_ACCESS_TOKEN != [NSNull null])
+//                        {
+//                            [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
+//                        }
+//                        else
+//                        {
+//                            [parameter_dict setObject:@"" forKey:@"token"];
+//                        }
+//                    }
+//                                        
+//                    URLManager *manager = [[URLManager alloc] init];
+//                    manager.delegate = self;
+//                    manager.commandName = @"Logout";
+//                    [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
+//                }
+//            }
+//        }];
+//    }];
+//    [alertView showWithAnimation:Alert_Animation_Type];
+//    
+//}
 #pragma mark Response
 - (void)onResult:(NSDictionary *)result {
     
@@ -4588,10 +4965,13 @@
     [activityIndicatorForlogout stopAnimating];
     
     NSLog(@"Result :%@",result);
-    if([[result valueForKey:@"commandName"] isEqualToString:@"GettingPeopels"])
+    if([[result valueForKey:@"commandName"] isEqualToString:@"GettUserDetails"])
     {
         if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
         {
+//            strProvienceKeyWord = @"";
+//            strStateKeyWord = @"";
+//            strCountryKeyWord = @"";
             
             if([[result valueForKey:@"result"] valueForKey:@"profile"])
             {
@@ -4621,6 +5001,17 @@
                         [userDefaults setObject:@"" forKey:@"USER_IMAGE"];
                     }
                     
+                    
+                    NSString * strUserName = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"username"]]];
+                    
+                    
+                    if (strUserName!=nil && ![strUserName isEqualToString:@"(null)"] ) {
+                        [userDefaults setObject:strUserName forKey:@"CURRENT_USER_FIRST_NAME"];
+                    }
+                    else{
+                        [userDefaults setObject:@"" forKey:@"CURRENT_USER_FIRST_NAME"];
+                    }
+                                        
                     [userDefaults synchronize];
  
                     [self dataPassingtoFields:dicDetails];
@@ -4643,12 +5034,48 @@
                     }
                 }
             }
+        }else if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"error"]){
+            
+            //[self CallWebapiForLogout];
+            [APP_DELEGATE CallWebapiForLogout];
+        }
+    }
+    else if ([[result valueForKey:@"commandName"] isEqualToString:@"unreadMessages"])
+    {
+        NSLog(@"Inside==>");
+        [arrUnreadTotalCount removeAllObjects];
+        
+        if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
+        {
+            if ([[[result valueForKey:@"result"] valueForKey:@"items"]count]>0) {
+                if ([[result valueForKey:@"result"] valueForKey:@"items"]!=nil && [[result valueForKey:@"result"] valueForKey:@"items"]!=[NSNull null]) {
+                    arrUnreadTotalCount = [[result valueForKey:@"result"] valueForKey:@"items"];
+                    
+                    if ([arrUnreadTotalCount count]>0) {
+                        NSLog(@"arrUnreadTotalCount%@",arrUnreadTotalCount);
+                        imgUnreadMessageCount.hidden = NO;
+                        lblUnreadCount.hidden = NO;
+                        
+                        lblUnreadCount.text = [NSString stringWithFormat:@"%lu",[arrUnreadTotalCount count]];
+                    }
+                    else{
+                        imgUnreadMessageCount.hidden = YES;
+                        lblUnreadCount.hidden = YES;
+                        
+                    }
+                }
+            }
+            else{
+                imgUnreadMessageCount.hidden = YES;
+                lblUnreadCount.hidden = YES;
+            }
         }
     }
     else if ([[result valueForKey:@"commandName"] isEqualToString:@"UpdateProfile"])
     {
         if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
         {
+            
             [self upDatewebserviceCalling];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"Refresh" object:nil];
 
@@ -4681,12 +5108,16 @@
         if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
         {
             NSLog(@"logout==>");
+            deviceTokenStr = @"";
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"CURRENT_USER_ACCESS_TOKEN"];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"CURRENT_USER_EMAIL"];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"NEW_USER_STATUS"];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"GENDER_STATUS"];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"USER_IMAGE"];
 
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"CURRENT_USER_FIRST_NAME"];
+
+            
             [[NSUserDefaults standardUserDefaults] synchronize];
             
 
@@ -4718,6 +5149,7 @@
     [placeActivityIndicator stopAnimating];
     [btnlogoutButton setEnabled:YES];
     [activityIndicatorForlogout stopAnimating];
+    [self upDatewebserviceCalling];
 
     NSLog(@"The error is...%@", error);
 }

@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Constant.h"
 
 @interface UserDetailVC : UIViewController<URLManagerDelegate>
 {
+    
     UIActivityIndicatorView * placeActivityIndicator;
     
     UIImageView * navview;
@@ -21,9 +23,17 @@
     
     UIView * viewTransperent;
     
-    NSMutableArray * arrofColors;
+//    NSMutableArray * arrofColors;
     
     UILabel * lblStatus;
+    
+    NSMutableArray * arrColors;
+    
+//    AppDelegate * appDelegate;
 }
 @property(nonatomic,strong)NSString * strUsername;
+@property(nonatomic,strong)NSString * isFromPush;
+@property(nonatomic,strong)NSString * isFromMatchesandChat;
+
+
 @end

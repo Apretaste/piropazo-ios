@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad
 {
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
     changeLanguage = NO;
     [super viewDidLoad];
     tempArray = [[NSMutableArray alloc]init];
@@ -197,6 +198,19 @@
         }
     }
 
+    NSUserDefaults * UserdefsultsAppRating = [NSUserDefaults standardUserDefaults];
+    // getting an NSString
+    isForRating = [UserdefsultsAppRating valueForKey:@"APP_RATING_FOR"];
+    
+    if (isForRating==nil || [isForRating isEqualToString:@""] || [isForRating isEqual:[NSNull null] ]) {
+        
+        isForRating = @"NO";
+        
+        [UserdefsultsAppRating setValue:isForRating forKey:@"APP_RATING_FOR"];
+        
+    }
+    
+    
     if([CURRENT_USER_ACCESS_TOKEN isEqual:[NSNull null]] || [CURRENT_USER_ACCESS_TOKEN isEqualToString:@""] || CURRENT_USER_ACCESS_TOKEN == nil || [CURRENT_USER_ACCESS_TOKEN isEqualToString:@"(null)"])
     {
         ValidateEmailVC * splash = [[ValidateEmailVC alloc] init];
@@ -207,13 +221,41 @@
         appDelegate.window.rootViewController = navControl;
     }
    else
-   {
+   {    [self callWebapiForLanguage];
        [self upDatewebserviceCalling];
        [APP_DELEGATE setUpTabBarController:@"NO"];
        
    }
 }
 #pragma mark - WebserviceCalling
+-(void)callWebapiForLanguage {
+    NSString * webServiceName = @"run/api";
+    
+    // Checking user logged in or not
+    NSLog(@"userToken==%@",CURRENT_USER_ACCESS_TOKEN);
+    [[NSBundle mainBundle] preferredLocalizations];
+    NSString *languageSyatem = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+    
+    NSString * strLang = @"";
+    NSLog(@"language==>%@",languageSyatem);
+ if ([languageSyatem isEqualToString:@"es"]) {
+     strLang= @"es";
+     
+ }else{
+     strLang= @"en";
+ }
+    
+    NSMutableDictionary *parameter_dict = [[NSMutableDictionary alloc]init];
+    NSString * strLangusgae = [NSString stringWithFormat:@"perfil LANG %@",strLang];
+    
+    [parameter_dict setObject:strLangusgae forKey:@"subject"];
+    [parameter_dict setObject:CURRENT_USER_ACCESS_TOKEN forKey:@"token"];
+    
+    URLManager *manager = [[URLManager alloc] init];
+    manager.delegate = self;
+    manager.commandName = @"Languagechange";
+    [manager postUrlCall:[NSString stringWithFormat:@"%@%@",WEB_SERVICE_URL,webServiceName] withParameters:parameter_dict];
+}
 -(void)upDatewebserviceCalling
 {
     NSString * webServiceName = @"run/api";
@@ -236,52 +278,52 @@
     
     NSLog(@"Result :%@",result);
     if([[result valueForKey:@"commandName"] isEqualToString:@"GettingPeopels"])
-    {
         if ([[[result valueForKey:@"result"] valueForKey:@"code"]isEqualToString:@"ok"])
         {
-//            NSMutableDictionary * dicUserProfile = [result valueForKey:@"result"];
-//            
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"MoveNotificationtab" object:self userInfo:dicUserProfile];
-
+            
             if([[result valueForKey:@"result"] valueForKey:@"profile"])
             {
-//                [tempArray removeAllObjects];
                 NSMutableDictionary * dicDetails = [[NSMutableDictionary alloc]init];
-
+                
                 if ([[result valueForKey:@"result"] valueForKey:@"profile"]!=nil && [[result valueForKey:@"result"] valueForKey:@"profile"]!=[NSNull null]) {
                     dicDetails = [[result valueForKey:@"result"] valueForKey:@"profile"];
                 }
                 
-//                if ([tempArray count]>0) {
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 
-                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                    
-                    NSString * strGender = [NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"gender"]];
+                NSString * strGender = [NSString stringWithFormat:@"%@",[dicDetails valueForKey:@"gender"]];
                 
-                     NSString * strImage = [NSString stringWithFormat:@"%@",[NSString stringWithFormat:@"%@",[[dicDetails valueForKey:@"profile"]valueForKey:@"picture_public"]]];
-                    
-                    if (strGender!=nil && ![strGender isEqualToString:@"(null)"] ) {
-                        [userDefaults setObject:strGender forKey:@"GENDER_STATUS"];
-                    }
-                    else{
-                        [userDefaults setObject:@"" forKey:@"GENDER_STATUS"];
-                    }
-                    
-                    if (strImage!=nil && ![strImage isEqualToString:@"(null)"] ) {
-                        [userDefaults setObject:strImage forKey:@"USER_IMAGE"];
-                    }
-                    else{
-                        [userDefaults setObject:@"" forKey:@"USER_IMAGE"];
-                    }
-                    
-                    [userDefaults synchronize];
-//                    }
+                NSString * strImage = [NSString stringWithFormat:@"%@",[dicDetails valueForKey:@"picture_public"]];
                 
-
+                NSString * strUserName = [NSString stringWithFormat:@"%@",[dicDetails valueForKey:@"username"]];
+                
+                if (strUserName!=nil && ![strUserName isEqualToString:@"(null)"] ) {
+                    [userDefaults setObject:strUserName forKey:@"CURRENT_USER_FIRST_NAME"];
                 }
+                else{
+                    [userDefaults setObject:@"" forKey:@"CURRENT_USER_FIRST_NAME"];
+                }
+                
+                
+                if (strGender!=nil && ![strGender isEqualToString:@"(null)"] ) {
+                    [userDefaults setObject:strGender forKey:@"GENDER_STATUS"];
+                }
+                else{
+                    [userDefaults setObject:@"" forKey:@"GENDER_STATUS"];
+                }
+                
+                if (strImage!=nil && ![strImage isEqualToString:@"(null)"] ) {
+                    [userDefaults setObject:strImage forKey:@"USER_IMAGE"];
+                }
+                else{
+                    [userDefaults setObject:@"" forKey:@"USER_IMAGE"];
+                }
+                
+                [userDefaults synchronize];
             }
+        }else if ([[result valueForKey:@"commandName"] isEqualToString:@"Languagechange"]){
+            
         }
-        
 }
 
 - (void)onError:(NSError *)error

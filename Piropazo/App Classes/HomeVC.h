@@ -17,6 +17,10 @@
 
 @interface HomeVC : UIViewController<MDCSwipeToChooseDelegate,UIScrollViewDelegate,URLManagerDelegate>
 {
+    
+    UIImageView * imgUnreadMessageCount;
+    UILabel * lblUnreadCount;
+    
     UIImageView * navview;
     UILabel * lblError;
     
@@ -54,6 +58,12 @@
     UILabel * lblStatus;
     
     BOOL Edit;
+    
+    UIView* viewApprate;
+    
+    NSTimer *myTimer;
+    
+    NSUserDefaults *UserdefsultsAppRating;
  
 }
 @property(nonatomic,strong)NSString*strFirst;

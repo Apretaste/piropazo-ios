@@ -281,13 +281,13 @@
                   symbolName = "-[UIView(MDCSwipeToChoose) mdc_translationExceedingThreshold:direction:]"
                   moduleName = "Piropazo"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Project/Piropazo/Sourcecode/2017/August/14-08-2017/piropazo-ios/Piropazo/Helper%20Classes/MDCSwipe/MDCSwipeToChoose/Public/Views/UIView+MDCSwipeToChoose.m"
-                  timestampString = "524399405.595885"
+                  urlString = "file:///Project/Piropazo/Sourcecode/2017/September/07-09-2017/piropazo-ios/Piropazo/Helper%20Classes/MDCSwipe/MDCSwipeToChoose/Public/Views/UIView+MDCSwipeToChoose.m"
+                  timestampString = "526473621.087335"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "282"
                   endingLineNumber = "282"
-                  offsetFromSymbolStart = "28">
+                  offsetFromSymbolStart = "46">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -296,13 +296,13 @@
                   symbolName = "-[UIView(MDCSwipeToChoose) mdc_translationExceedingThreshold:direction:]"
                   moduleName = "Piropazo"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Project/Piropazo/Sourcecode/2017/August/14-08-2017/piropazo-ios/Piropazo/Helper%20Classes/MDCSwipe/MDCSwipeToChoose/Public/Views/UIView+MDCSwipeToChoose.m"
-                  timestampString = "524399405.601837"
+                  urlString = "file:///Project/Piropazo/Sourcecode/2017/September/07-09-2017/piropazo-ios/Piropazo/Helper%20Classes/MDCSwipe/MDCSwipeToChoose/Public/Views/UIView+MDCSwipeToChoose.m"
+                  timestampString = "526473621.094149"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "282"
                   endingLineNumber = "282"
-                  offsetFromSymbolStart = "78">
+                  offsetFromSymbolStart = "65">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -656,6 +656,86 @@
             startingLineNumber = "4749"
             endingLineNumber = "4749"
             landmarkName = "-callWebapiforUpdateProfile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Piropazo/App Classes/UserDetailVC.m"
+            timestampString = "526477843.011624"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "684"
+            endingLineNumber = "684"
+            landmarkName = "-btnBlockClicked:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Piropazo/App Classes/UserDetailVC.m"
+            timestampString = "526477843.011624"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "693"
+            endingLineNumber = "693"
+            landmarkName = "-btnFeedbackClicked:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Piropazo/App Classes/UserDetailVC.m"
+            timestampString = "526477843.011624"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "735"
+            endingLineNumber = "735"
+            landmarkName = "-btnReportPopOkClicked:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Piropazo/App Classes/UserDetailVC.m"
+            timestampString = "526477843.011624"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "736"
+            endingLineNumber = "736"
+            landmarkName = "-btnReportPopOkClicked:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Piropazo/App Classes/UserDetailVC.m"
+            timestampString = "526477843.011624"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "786"
+            endingLineNumber = "786"
+            landmarkName = "-callWebapiForReportUser:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

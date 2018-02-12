@@ -188,3 +188,14 @@
 "Navigation" = "Configuración ==> General ==> Idioma y región ==> Seleccionar el idioma del iPhone";
 "Yes" = "Sí";
 "Noflowernotification" = "No tiene suficientes flores, pero no se preocupe, tenemos flores frescas y olorosas en nuestra tienda.";
+"Block" = "bloquar";
+"Do you really want to block" = "¿Quieres bloquar a";
+"Your profile will never show to this person, and he or she will never be able to contact you." = "Tu perfil nunca se le mostrará a esta persona, y tampoco recibirás sus mensajes.";
+"Why would you like to report" = "¿Por que quieres reportar";
+"This picture or text is offensive" = "Su foto o la descripcion son ofensivos";
+"This person do not exist in real life" = "Esta persona no existe en la vida real";
+"The profile do not describe the user" = "El perfil no es fiel a como luce la persona";
+"This person is impersonating someone" = "Se esta haciendo pasar por alguien";
+"The profile contains a copyright violation" = "El perfil infringe los derechos de autor";
+"Report" = "Reportar";
+"Please select a reason for report" = "Seleccione un motivo para el informe";

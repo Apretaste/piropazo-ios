@@ -23,6 +23,7 @@
 "Take Picture" = "Take Picture";
 "Send" = "Send";
 "Cancel" = "Cancel";
+"Block" = "Block";
 "Next" = "Next";
 "You said Yes to" = "You said Yes to";
 "You said No to" = "You said No to";
@@ -187,3 +188,13 @@
 "Navigation" = "Settings ==> General ==> Language & Region ==> Select iPhone Language";
 "Yes" = "Yes";
 "Noflowernotification" = "You do not have enough flowers, but that's not a problem, we have some fresh flowers in stock at our store.";
+"Do you really want to block" = "Do you really want to block";
+"Your profile will never show to this person, and he or she will never be able to contact you." = "Your profile will never show to this person, and he or she will never be able to contact you.";
+"Why would you like to report" = "Why would you like to report";
+"This picture or text is offensive" = "This picture or text is offensive";
+"This person do not exist in real life" = "This person do not exist in real life";
+"The profile do not describe the user" = "The profile do not describe the user";
+"This person is impersonating someone" = "This person is impersonating someone";
+"The profile contains a copyright violation" = "The profile contains a copyright violation";
+"Report" = "Report";
+"Please select a reason for report" = "Please select a reason for report";
